@@ -10,8 +10,7 @@ export default function NoData({
 }) {
   return (
     <Svg width={width} height={height}>
-      <Rect width="100%" height="100%" fill="#fff" />
-      <Rect height="100%" width="100%" fill="none" stroke="#ddd" />
+      {border && <Rect height="100%" width="100%" fill="none" stroke="#ddd" />}
       {message != null && (
         <Text
           fill="#bbb"
