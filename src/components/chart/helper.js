@@ -19,15 +19,16 @@ export function getDefaultScale(sample) {
 
 export function parseAccessor(accessor) {
   switch (typeof accessor) {
-    case "string":
+    case "string": {
       const paths = accessor.split(".");
       if (paths.length === 1) {
-        return d => d[accessor];
+        return (d) => d[accessor];
       } else {
-        return d => paths.reduce((p, c) => p[c], d);
+        return (d) => paths.reduce((p, c) => p[c], d);
       }
+    }
     case "number":
-      return d => d[accessor];
+      return (d) => d[accessor];
     case "function":
       return accessor;
     default:
@@ -44,9 +45,9 @@ function parseYAccessor(y) {
     case "object":
       _y = {};
       if (Array.isArray(y)) {
-        y.forEach(ya => (_y[ya] = parseAccessor(ya)));
+        y.forEach((ya) => (_y[ya] = parseAccessor(ya)));
       } else {
-        Object.keys(y).forEach(k => (_y[k] = parseAccessor(y[k])));
+        Object.keys(y).forEach((k) => (_y[k] = parseAccessor(y[k])));
       }
       break;
     default:
@@ -64,7 +65,7 @@ export function computeDomain(data, accessor) {
     case "number":
       return extent(data, accessor);
     case "string":
-      return data.map(d => accessor(d));
+      return data.map((d) => accessor(d));
     case "object":
       if (d0 instanceof Date) return extent(data, accessor);
       else throw new Error("Cannot compute domain");
@@ -79,7 +80,7 @@ const DM = {
   top: 20,
   right: 20,
   bottom: 20,
-  left: 20
+  left: 20,
 };
 
 /**
@@ -112,10 +113,11 @@ export function computeChartContext(
   isChartRoot = false
 ) {
   if (data == null && ctv.data == null) throw new Error("No data specified");
-  const _data = data != null ? data : ctv.data;
+  const _data = data || ctv.data;
 
-  const _width = width != null ? width : ctv.width ? ctv.width : DW;
-  const _height = height != null ? height : ctv.height ? ctv.height : DH;
+  //note: zero width or height is not excepted here
+  const _width = width || ctv.width || DW;
+  const _height = height || ctv.height || DH;
   const _margin = _.defaults({}, margin, ctv.margin, DM);
 
   let _x;
@@ -140,7 +142,7 @@ export function computeChartContext(
 
   if (_data[0] && _y != null) {
     // console.log(_y);
-    Object.values(_y).forEach(a => {
+    Object.values(_y).forEach((a) => {
       if (a(_data[0]) === undefined) {
         throw new Error("Invalid Y accessor");
       }
@@ -166,9 +168,11 @@ export function computeChartContext(
   const getDefaultYs = (s = null) => {
     const k = Object.keys(_y);
     const scale = s ? s.copy() : getDefaultScale(_y[k[0]](_data[0]));
-    const allExtent = k.map(k => extent(_data, _y[k]));
+    const allExtent = k.map((k) => extent(_data, _y[k]));
     scale
-      .domain(yd ? yd : [min(allExtent, e => e[0]), max(allExtent, e => e[1])])
+      .domain(
+        yd ? yd : [min(allExtent, (e) => e[0]), max(allExtent, (e) => e[1])]
+      )
       .range(yr ? yr : [_height - _margin.bottom, _margin.top]);
     return scale;
   };
@@ -193,6 +197,6 @@ export function computeChartContext(
     x: _x,
     y: _y,
     xs: _xs,
-    ys: _ys
+    ys: _ys,
   };
 }
