@@ -3,7 +3,7 @@ import Inspect from "./inspect/Inspect";
 import { useHandler } from "./inspect/handler";
 import { parseAccessor, computeDomain, parseYAccessor } from "./helper";
 import NoData from "./NoData";
-import Svg, { Rect } from "react-native-svg";
+import Svg, { Rect, Defs, ClipPath } from "react-native-svg";
 import Axis from "./Axis";
 import * as d3Scale from "d3-scale";
 import * as d3Array from "d3-array";
@@ -160,6 +160,7 @@ function InnerChart({
     [_margin.bottom, _margin.left, _margin.right, _margin.top, height, width]
   );
 
+  // TODO: multiple x-axis
   //determine x axis
   const xa = parseAccessor(x);
   let domain;
@@ -198,6 +199,16 @@ function InnerChart({
   return (
     <ChartContext.Provider value={ctv}>
       <Svg width={width} height={height} {...handlers}>
+        <Defs>
+          <ClipPath id="clip">
+            <Rect
+              x={_margin.left}
+              y={_margin.top}
+              width={width - _margin.left - _margin.right}
+              height={height - _margin.top - _margin.bottom}
+            />
+          </ClipPath>
+        </Defs>
         <Rect width={width} height={height} fill="none" stroke="#ddd" />
         {children}
       </Svg>

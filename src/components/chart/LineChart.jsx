@@ -12,6 +12,7 @@ export default function LineChart({ y, xAxis = null, yAxis }) {
       {Object.values(ya).map((a, i) => (
         <Path
           key={i}
+          clipPath="url(#clip)"
           d={line.y((d) => sy(a(d)))(data)}
           stroke="steelblue"
           strokeWidth={1}

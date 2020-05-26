@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
 import { Circle } from "react-native-svg";
@@ -19,14 +19,17 @@ const Pointer = () => {
 };
 
 export default function SimpleChart() {
-  const [w, setW] = useState(400);
   const parse = timeParse("%Y-%m-%d");
   const tickFormat = timeFormat("%b");
   return (
     <View>
-      <Chart data={covid["Thailand"]} x={(d) => parse(d.date)} width={w}>
+      <Chart
+        data={covid["Thailand"]}
+        x={(d) => parse(d.date)}
+        height={300}
+        width={400}
+      >
         <LineChart y={cols} yAxis="y" xAxis="x" />
-
         <Axis scale="linear" id="y" />
         <Axis
           scale="time"
@@ -37,7 +40,6 @@ export default function SimpleChart() {
         />
         <Pointer />
       </Chart>
-      <Button title="update" onPress={() => setW((p) => p + 50)} />
     </View>
   );
 }
