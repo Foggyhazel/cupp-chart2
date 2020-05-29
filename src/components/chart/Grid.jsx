@@ -34,7 +34,7 @@ function Grid({ scale, xAxis, yAxis }) {
   } else if (xs && xs.option.tickArguments) {
     xTick = xs.ticks.apply(xs, xs.option.tickArguments);
   } else {
-    xTick = (xs && xs.ticks()) || null;
+    xTick = (xs && xs.ticks && xs.ticks()) || xs.domain();
   }
 
   if (ys && ys.option.tickValues) {
@@ -42,7 +42,7 @@ function Grid({ scale, xAxis, yAxis }) {
   } else if (ys && ys.option.tickArguments) {
     yTick = ys.ticks.apply(ys, ys.option.tickArguments);
   } else {
-    yTick = (ys && ys.ticks()) || null;
+    yTick = (ys && ys.ticks && ys.ticks()) || ys.domain();
   }
 
   return (
