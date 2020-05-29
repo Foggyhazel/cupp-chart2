@@ -273,21 +273,23 @@ export const compose = (config) => (Plot) => {
     const ctx = useChartContext();
     const selectorRef = useRef(null);
 
-    let configObj;
+    let exportScale, data;
 
-    if (selectorRef.current != null) {
-      configObj = selectorRef.current(ctx.data, innerProps, ctx);
-    } else {
-      const r = config(ctx.data, innerProps, ctx);
-      if (typeof r === "function") {
-        selectorRef.current = r;
+    if (config) {
+      let configObj;
+      if (selectorRef.current != null) {
         configObj = selectorRef.current(ctx.data, innerProps, ctx);
       } else {
-        configObj = r;
+        const r = config(ctx.data, innerProps, ctx);
+        if (typeof r === "function") {
+          selectorRef.current = r;
+          configObj = selectorRef.current(ctx.data, innerProps, ctx);
+        } else {
+          configObj = r;
+        }
       }
+      ({ exportScale, data } = configObj);
     }
-
-    const { exportScale, data } = configObj;
 
     return (
       <React.Fragment>
