@@ -22,6 +22,7 @@ function AreaPlot({ scale, y, xAxis = "_x", yAxis = "_y" }) {
       {Object.values(ya).map((a, i) => (
         <Path
           key={i}
+          clipPath="url(#clip)"
           d={area.y1((d) => sy(a(d)))(data)}
           stroke="none"
           strokeWidth={1}
