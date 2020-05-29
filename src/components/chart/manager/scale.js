@@ -1,5 +1,4 @@
 import * as d3Scale from "d3-scale";
-import _ from "lodash";
 
 /**
  * Helper functions related to scale
@@ -67,7 +66,7 @@ export function makeScale(type, domain, option = {}) {
       throw new Error("not implemented");
   }
 
-  if (option.nice) {
+  if (type & scaleClass.continuous && option.nice) {
     scale.nice();
   }
 
