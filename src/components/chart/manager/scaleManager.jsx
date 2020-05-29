@@ -301,7 +301,7 @@ export const compose = (config) => (Plot) => {
     const ctx = useChartContext();
     const selectorRef = useRef(null);
 
-    let exportScale, data;
+    let exportScale, data, setProps;
 
     if (config) {
       let configObj;
@@ -316,7 +316,7 @@ export const compose = (config) => (Plot) => {
           configObj = r;
         }
       }
-      ({ exportScale, data } = configObj);
+      ({ exportScale, data, setProps } = configObj);
     }
 
     return (
@@ -331,7 +331,7 @@ export const compose = (config) => (Plot) => {
           data={data}
           ctx={ctx}
           Elem={MemoizedPlot}
-          innerProps={innerProps}
+          innerProps={{ ...innerProps, ...setProps }}
         />
       </React.Fragment>
     );
