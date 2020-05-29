@@ -1,3 +1,5 @@
+import * as d3Scale from "d3-scale";
+
 /**
  * Helper functions related to scale
  */
@@ -35,5 +37,22 @@ export function getDefaultScaleType(sample) {
       return null;
     default:
       return null;
+  }
+}
+
+export function makeScale(type, domain) {
+  switch (type) {
+    case scaleType.linear:
+      return d3Scale.scaleLinear().domain(domain).nice();
+    case scaleType.time:
+      return d3Scale.scaleTime().domain(domain).nice();
+    case scaleType.utc:
+      return d3Scale.scaleUtc().domain(domain).nice();
+    case scaleType.band:
+      return d3Scale.scaleBand().domain(domain).nice();
+    case scaleType.point:
+      return d3Scale.scalePoint().domain(domain).nice();
+    default:
+      throw new Error("not implemented");
   }
 }
