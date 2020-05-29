@@ -19,7 +19,7 @@ import { Line, G, Text, Path } from "react-native-svg";
  */
 export default function ChartAxis({
   orient = "left",
-  scale,
+  rawScale,
   offsetX = 0,
   offsetY = 0,
   tickSize = 4,
@@ -31,22 +31,22 @@ export default function ChartAxis({
   fontSize = 8,
   noLine = false,
 }) {
-  const r = scale.range();
+  const r = rawScale.range();
   const r0 = r[0];
   const r1 = r[r.length - 1];
 
   const ticks =
     tickValues !== null
       ? tickValues
-      : scale.ticks
-      ? scale.ticks.apply(scale, tickArguments)
-      : scale.domain();
+      : rawScale.ticks
+      ? rawScale.ticks.apply(rawScale, tickArguments)
+      : rawScale.domain();
 
   const format =
     tickFormat !== null
       ? tickFormat
-      : scale.tickFormat
-      ? scale.tickFormat.apply(scale, tickArguments)
+      : rawScale.tickFormat
+      ? rawScale.tickFormat.apply(rawScale, tickArguments)
       : (t) => `${t}`;
 
   const dir = orient === "left" || orient === "top" ? -1 : 1;
@@ -80,8 +80,8 @@ export default function ChartAxis({
   const renderTick = (tickValue, key) => {
     const xform =
       orient === "left" || orient === "right"
-        ? `translate(0, ${scale(tickValue)})`
-        : `translate(${scale(tickValue)}, 0)`;
+        ? `translate(0, ${rawScale(tickValue)})`
+        : `translate(${rawScale(tickValue)}, 0)`;
     return (
       <G transform={xform} key={key}>
         <Line {...tickEnd} strokeWidth={1} stroke="black" />
