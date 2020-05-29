@@ -37,14 +37,14 @@ export const _Internal_ExportScale = withRef(
       () => {
         update();
         console.log("change export ");
+        const _d = domain || [];
+        min != null && (_d[0] = min);
+        max != null && (_d[1] = max);
         return {
           getScaleInfo: () => {
             return {
               scaleId,
-              domain: domain || [
-                (domain && domain[0]) || min || null,
-                (domain && domain[1]) || max || null,
-              ],
+              domain: _d,
               sourceType,
               scaleType: scaleType || null,
               option: {
@@ -72,6 +72,7 @@ export const _Internal_ExportScale = withRef(
   }
 );
 
+//TODO: Finalize scale that immediate exit as soon as scale info is complete. Recognize lazy domain calc
 /**
  * combine many scale info eg. domain, type exported by data plot or
  * axis into single d3 scale foreach scale id
@@ -115,7 +116,10 @@ function finalizeScale(scaleInfo) {
         }
       } else if (scaleClass.ordinal & s.scaleType) {
         if (s.domain.length == 0) s.domain = [..._do] || [];
-        console.warn("replacing ordinal domain. May cause unexpected result");
+        else if (_do.length > 0) {
+          s.domain.push(..._do);
+          console.warn("Appending ordinal domain may cause unexpected result");
+        }
       } else {
         // no scale type. eg. waiting for type from data
         // not exist since info from data is read first.
