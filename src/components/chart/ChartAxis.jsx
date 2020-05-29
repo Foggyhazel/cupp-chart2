@@ -77,6 +77,7 @@ export default function ChartAxis({
     bottom: { dy: tickSize + tickPadding + 0.75 * fontSize },
   }[orient];
 
+  //TODO: minimize #component
   const renderTick = (tickValue, key) => {
     const xform =
       orient === "left" || orient === "right"

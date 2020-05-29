@@ -10,6 +10,7 @@ import { withRef, RefManager, useRefMap } from "./refManager";
 import { useChartContext } from "./chartContext";
 import { scaleClass, makeScale } from "./scale";
 import { min as d3Min, max as d3Max } from "d3-array";
+import _ from "lodash";
 
 const ScaleContext = createContext(null);
 const ScaleUpdateContext = createContext();
@@ -25,10 +26,12 @@ const SMContext = createContext({});
  * @type {React.FunctionComponent<{scaleId: string, domain: Array, scaleType: number, sourceType:"data"|"axis" }>} _Internal_ExportScale
  */
 export const _Internal_ExportScale = withRef(
-  ({ scaleId, domain, min, max, scaleType, sourceType = "data" }, ref) => {
+  (
+    { scaleId, domain, min, max, scaleType, sourceType = "data", option = {} },
+    ref
+  ) => {
     // domain is an array [number, number] or () => [number, number]
     const update = useContext(SMContext);
-
     useImperativeHandle(
       ref,
       () => {
@@ -44,11 +47,27 @@ export const _Internal_ExportScale = withRef(
               ],
               sourceType,
               scaleType: scaleType || null,
+              option: {
+                nice: option.nice,
+                tickValues: option.tickValues,
+                tickArguments: option.tickArguments,
+              },
             };
           },
         };
       },
-      [domain, min, max, scaleId, scaleType, sourceType, update]
+      [
+        update,
+        scaleId,
+        domain,
+        min,
+        max,
+        sourceType,
+        scaleType,
+        option.nice,
+        option.tickValues,
+        option.tickArguments,
+      ]
     );
   }
 );
@@ -71,7 +90,7 @@ function finalizeScale(scaleInfo) {
   );
 
   let map = {};
-  const override = ({ scaleId, domain, scaleType, sourceType }) => {
+  const override = ({ scaleId, domain, scaleType, sourceType, option }) => {
     if (!map[scaleId]) map[scaleId] = {};
     const s = map[scaleId];
 
@@ -103,6 +122,11 @@ function finalizeScale(scaleInfo) {
         throw new Error("It actually exist!!!");
       }
     }
+
+    if (!s.option) {
+      s.option = {};
+    }
+    _.assign(s.option, option);
   };
 
   dataInfo.forEach((i) => override(i));
@@ -111,8 +135,9 @@ function finalizeScale(scaleInfo) {
   const scaleMap = {};
   Object.keys(map).forEach((k) => {
     scaleMap[k] = {
-      scale: makeScale(map[k].scaleType, map[k].domain),
+      scale: makeScale(map[k].scaleType, map[k].domain, map[k].option),
       scaleType: map[k].scaleType,
+      option: map[k].option,
     };
   });
 
@@ -148,7 +173,7 @@ function ScaleManagerContent({ children }) {
   }, []);
 
   useEffect(() => {
-    //console.log("root", __root.current);
+    // console.log("root", __root.current);
     // skip effect due to update() call by children,
     // originated from re-render of scale manager root component
     if (__root.current) {
@@ -157,9 +182,12 @@ function ScaleManagerContent({ children }) {
       let sync = {};
       refMap.forEach(({ getScaleInfo }, k) => {
         if (getScaleInfo) {
-          result.push(getScaleInfo());
-          if (prevGetInfo.current[k] != getScaleInfo) changed = true;
-          sync[k] = getScaleInfo;
+          const info = getScaleInfo();
+          if (info.scaleId) {
+            result.push(getScaleInfo());
+            if (prevGetInfo.current[k] != getScaleInfo) changed = true;
+            sync[k] = getScaleInfo;
+          }
         }
       });
       prevGetInfo.current = sync;
@@ -295,7 +323,7 @@ export const compose = (config) => (Plot) => {
       <React.Fragment>
         {exportScale &&
           Object.keys(exportScale)
-            .filter((k) => !!k && k != "undefined")
+            .filter((k) => !!k && k != "undefined" && k != "null")
             .map((k) => (
               <_Internal_ExportScale key={k} {...exportScale[k]} scaleId={k} />
             ))}
@@ -336,6 +364,7 @@ const ForwardScale = ({ data, ctx, Elem, innerProps }) => {
         if (orient === "v") _s.range([height - bottom, top]);
 
         _s.scaleType = scale.map[id].scaleType;
+        _s.option = scale.map[id].option;
         return _s;
       }
       return null;

@@ -1,4 +1,5 @@
 import * as d3Scale from "d3-scale";
+import _ from "lodash";
 
 /**
  * Helper functions related to scale
@@ -41,21 +42,34 @@ export function getDefaultScaleType(sample) {
   }
 }
 
-export function makeScale(type, domain) {
+export function makeScale(type, domain, option = {}) {
+  let scale;
   switch (type) {
     case scaleType.linear:
-      return d3Scale.scaleLinear().domain(domain).nice();
+      scale = d3Scale.scaleLinear().domain(domain);
+      break;
     case scaleType.log:
-      return d3Scale.scaleLog().domain(domain).clamp(true).nice();
+      scale = d3Scale.scaleLog().domain(domain).clamp(true);
+      break;
     case scaleType.time:
-      return d3Scale.scaleTime().domain(domain).nice();
+      scale = d3Scale.scaleTime().domain(domain);
+      break;
     case scaleType.utc:
-      return d3Scale.scaleUtc().domain(domain).nice();
+      scale = d3Scale.scaleUtc().domain(domain);
+      break;
     case scaleType.band:
-      return d3Scale.scaleBand().domain(domain).nice();
+      scale = d3Scale.scaleBand().domain(domain);
+      break;
     case scaleType.point:
-      return d3Scale.scalePoint().domain(domain).nice();
+      scale = d3Scale.scalePoint().domain(domain);
+      break;
     default:
       throw new Error("not implemented");
   }
+
+  if (option.nice) {
+    scale.nice();
+  }
+
+  return scale;
 }

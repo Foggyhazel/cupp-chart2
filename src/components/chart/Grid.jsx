@@ -1,6 +1,6 @@
 import React from "react";
 import { useChartContext } from "./manager/chartContext";
-import { Line, G } from "react-native-svg";
+import { Line, G, Rect } from "react-native-svg";
 import { compose } from "./manager/scaleManager";
 
 function Grid({ scale, xAxis, yAxis }) {
@@ -26,11 +26,35 @@ function Grid({ scale, xAxis, yAxis }) {
     />
   );
 
-  const xTick = (xs && xs.ticks()) || null;
-  const yTick = (ys && ys.ticks()) || null;
+  let xTick;
+  let yTick;
+
+  if (xs && xs.option.tickValues) {
+    xTick = xs.option.tickValues;
+  } else if (xs && xs.option.tickArguments) {
+    xTick = xs.ticks.apply(xs, xs.option.tickArguments);
+  } else {
+    xTick = (xs && xs.ticks()) || null;
+  }
+
+  if (ys && ys.option.tickValues) {
+    yTick = ys.option.tickValues;
+  } else if (ys && ys.option.tickArguments) {
+    yTick = ys.ticks.apply(ys, ys.option.tickArguments);
+  } else {
+    yTick = (ys && ys.ticks()) || null;
+  }
 
   return (
     <G>
+      <Rect
+        x={margin.left}
+        y={margin.top}
+        width={width - margin.right - margin.left}
+        height={height - margin.top - margin.bottom}
+        fill="none"
+        stroke="#eee"
+      />
       {xTick && xTick.map((t) => renderXLine(xs(t), t))}
       {yTick && yTick.map((t) => renderYLine(ys(t), t))}
     </G>

@@ -15,6 +15,7 @@ const mock = covid["Thailand"];
 const parseDate = timeParse("%Y-%m-%d");
 const cols = ["confirmed", "recovered", "deaths"];
 const xa = (d) => parseDate(d.date);
+const ta = [timeMonth];
 
 export default function SimpleChart2() {
   const tickFormat = timeFormat("%b");
@@ -31,7 +32,7 @@ export default function SimpleChart2() {
           id="_x"
           orient="bottom"
           tickFormat={tickFormat}
-          tickArguments={[timeMonth]}
+          tickArguments={ta}
         />
         <Axis id="_y" orient="left" />
         <Axis id="y2" orient="right" scaleType={scaleType.log} min={1} />

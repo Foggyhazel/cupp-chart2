@@ -20,7 +20,7 @@ function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
   return !hide ? (
     <ChartAxis
       orient={orient}
-      scale={scale(id, orient === "left" || orient === "right" ? "v" : "h")}
+      rawScale={scale(id, orient === "left" || orient === "right" ? "v" : "h")}
       offsetX={offsetX}
       offsetY={offsetY}
       {...rest}
@@ -36,6 +36,12 @@ export default compose((_, props) => ({
       max: props.max,
       sourceType: "axis",
       scaleType: props.scaleType,
+      option: {
+        // don't forget to edit ExportScale
+        nice: props.nice != null ? props.nice : true,
+        tickValues: props.tickValues,
+        tickArguments: props.tickArguments,
+      },
     },
   },
 }))(Axis);
