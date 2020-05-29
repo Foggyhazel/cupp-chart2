@@ -7,6 +7,7 @@ import LinePlot from "../components/chart/LinePlot";
 import { Button, View } from "react-native";
 import { timeMonth } from "d3-time";
 import AreaPlot from "../components/chart/AreaPlot";
+import { scaleType } from "../components/chart/manager/scale";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];
@@ -31,7 +32,7 @@ export default function SimpleChart2() {
           tickArguments={[timeMonth]}
         />
         <Axis id="_y" orient="left" />
-        <Axis id="y2" orient="right" max={6000} />
+        <Axis id="y2" orient="right" scaleType={scaleType.log} min={1} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
       <Button title="Increase" onPress={() => setY(y + 100)} />
