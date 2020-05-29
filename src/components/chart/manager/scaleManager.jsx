@@ -320,6 +320,8 @@ const ForwardScale = ({ data, ctx, Elem, innerProps }) => {
   const getScale = useCallback(
     /** @param {"h"|"v"} orient */
     (id, orient) => {
+      if (id == null) return null;
+
       const s = (scale && scale.map[id] && scale.map[id].scale) || null;
       if (s) {
         const _s = s.copy();
