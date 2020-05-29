@@ -1,6 +1,6 @@
-import * as d3Scale from "d3-scale";
-import { extent } from "d3-array";
+import { extent, min as d3Min, max as d3Max } from "d3-array";
 
+/*
 export function getDefaultScale(sample) {
   const type = typeof sample;
   switch (type) {
@@ -9,12 +9,13 @@ export function getDefaultScale(sample) {
     case "number":
       return d3Scale.scaleLinear();
     case "object":
-      if (sample instanceof Date) return d3Scale.scaleUtc();
-      throw new Error("Cannot compute default scale");
+      if (sample instanceof Date) return d3Scale.scaleTime();
+      return null;
     default:
-      throw new Error("Cannot compute default scale");
+      return null;
   }
 }
+*/
 
 export function parseAccessor(accessor) {
   switch (typeof accessor) {
@@ -58,7 +59,7 @@ export function parseYAccessor(y) {
 const epsilon = 1e-5;
 
 export function computeDomain(data, accessor) {
-  if (data.length === 0) return [0, epsilon];
+  if (!Array.isArray(data) || data.length === 0) return [0, epsilon];
   const d0 = accessor(data[0]);
   switch (typeof d0) {
     case "number":
@@ -71,4 +72,19 @@ export function computeDomain(data, accessor) {
     default:
       throw new Error("Cannot compute domain");
   }
+}
+
+export function computeYDomain(data, accessorObj) {
+  const allExtent = Object.values(accessorObj).map((ya) =>
+    computeDomain(data, ya)
+  );
+  return [d3Min(allExtent, (e) => e[0]), d3Max(allExtent, (e) => e[1])];
+}
+
+export function firstData(data, accessor = null) {
+  if (Array.isArray(data) && data.length > 0) {
+    return accessor ? accessor(data[0]) : data[0];
+  }
+
+  return null;
 }

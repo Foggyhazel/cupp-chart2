@@ -1,26 +1,10 @@
 import React from "react";
+import { compose } from "./manager/scaleManager";
+import { useChartContext } from "./manager/chartContext";
 import ChartAxis from "./ChartAxis";
-import { useScale } from "./context";
 
-/**
- * @typedef {Object} Props
- * @property {'linear' | 'time'} scale
- * @param {Props} param0
- */
-export default function Axis({
-  // eslint-disable-next-line no-unused-vars
-  scale,
-  // eslint-disable-next-line no-unused-vars
-  min,
-  // eslint-disable-next-line no-unused-vars
-  max,
-  orient = "left",
-  draw = true,
-  id,
-  ...rest
-}) {
-  const [s, ctv] = useScale(id);
-  const { width, height, margin } = ctv;
+function Axis({ id, scale, orient = "left", draw = true, ...rest }) {
+  const { width, height, margin } = useChartContext();
   const offsetX = {
     left: margin.left,
     top: 0,
@@ -36,10 +20,22 @@ export default function Axis({
   return draw ? (
     <ChartAxis
       orient={orient}
-      scale={s}
+      scale={scale(id, orient === "left" || orient === "right" ? "v" : "h")}
       offsetX={offsetX}
       offsetY={offsetY}
       {...rest}
     />
   ) : null;
 }
+
+export default compose((_, props) => ({
+  exportScale: {
+    [props.id]: {
+      domain: props.domain,
+      min: props.min,
+      max: props.max,
+      sourceType: "axis",
+      scaleType: props.scaleType,
+    },
+  },
+}))(Axis);
