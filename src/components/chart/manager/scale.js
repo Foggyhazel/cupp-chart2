@@ -11,6 +11,7 @@ export const scaleType = {
   time: 4,
   point: 8,
   band: 16,
+  log: 32,
   // power: "power",
   // log: "log",
   // radial: "radial",
@@ -21,7 +22,7 @@ export const scaleType = {
 };
 
 export const scaleClass = {
-  continuous: scaleType.linear | scaleType.time | scaleType.utc,
+  continuous: scaleType.linear | scaleType.time | scaleType.utc | scaleType.log,
   ordinal: scaleType.point | scaleType.band,
 };
 
@@ -44,6 +45,8 @@ export function makeScale(type, domain) {
   switch (type) {
     case scaleType.linear:
       return d3Scale.scaleLinear().domain(domain).nice();
+    case scaleType.log:
+      return d3Scale.scaleLog().domain(domain).clamp(true).nice();
     case scaleType.time:
       return d3Scale.scaleTime().domain(domain).nice();
     case scaleType.utc:
