@@ -8,23 +8,23 @@ export default function TouchHandler({ children, setCursor }) {
         setCursor({
           x: e.nativeEvent.locationX,
           y: e.nativeEvent.locationY,
-          active: true
+          active: true,
         });
       },
       onTouchMove(e) {
         setCursor({
           x: e.nativeEvent.locationX,
           y: e.nativeEvent.locationY,
-          active: true
+          active: true,
         });
       },
       onTouchEnd(e) {
         setCursor({
           x: e.nativeEvent.locationX,
           y: e.nativeEvent.locationY,
-          active: false
+          active: false,
         });
-      }
+      },
     };
   }, [setCursor]);
 

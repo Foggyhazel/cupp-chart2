@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useMemo } from "react";
-import Inspect from "./inspect/Inspect";
-import { useHandler } from "./inspect/handler";
-import { computeChartContext } from "./helper";
-import NoData from "./NoData";
-import Svg, { Rect } from "react-native-svg";
+import React, { useMemo } from "react";
+import { ChartContextProvider } from "./manager/chartContext";
+import Svg, { Defs, ClipPath, Rect } from "react-native-svg";
+import { computeDomain, parseAccessor, firstData } from "./helper";
+import { ScaleManager, _Internal_ExportScale } from "./manager/scaleManager";
+import { getDefaultScaleType, scaleClass } from "./manager/scale";
 
 const defaultMargin = {
   top: 20,
@@ -15,75 +15,95 @@ const defaultMargin = {
 const dw = 400;
 const dh = 300;
 
-const ChartContext = createContext({});
-/**
- * @param {import("./helper").ChartCtxOverride} override override
- */
-export const useChartContext = (override) => {
-  const ctv = useContext(ChartContext);
-  return computeChartContext(override, ctv);
-};
-
 function InnerChart({
   data = [],
-  x = null,
-  xs = null,
-  y = null,
-  ys = null,
+  x,
+  domain = null,
+  scaleType = null,
   width = dw,
   height = dh,
   margin = defaultMargin,
-  domain = null,
   border = true,
   children,
 }) {
-  const handlers = useHandler();
-  const ctv = useMemo(
-    () =>
-      computeChartContext(
-        { data, width, height, margin, x, xs, xd: domain, y, ys },
-        {},
-        true
-      ),
-    [data, width, height, margin, x, xs, domain, y, ys]
-  );
+  const _margin = { ...defaultMargin, ...margin };
 
-  if (data.length === 0)
-    return <NoData width={width} height={height} border={border} />;
+  const xa = useMemo(() => parseAccessor(x), [x]);
+  const _scaleType = scaleType || getDefaultScaleType(firstData(data, xa));
+
+  const _domain = useMemo(() => {
+    if (_scaleType & scaleClass.continuous) {
+      // domain in the form of [v,v]
+      const [min, max] = domain || [];
+      if (min == null || max == null) {
+        if (firstData(data) != null) {
+          const [d_min, d_max] = computeDomain(data, xa);
+          return [min != null ? min : d_min, max != null ? max : d_max];
+        }
+      }
+      // domain will be completed by scale manager later
+      return [min, max];
+    } else {
+      // ordinal data
+      if (!Array.isArray(data) || data.length == 0) {
+        return computeDomain(data, xa);
+      } else {
+        return domain;
+      }
+    }
+  }, [_scaleType, data, domain, xa]);
+
+  const ctv = {
+    data,
+    width,
+    height,
+    margin: _margin,
+    xa,
+  };
 
   return (
-    <ChartContext.Provider value={ctv}>
-      <Svg width={width} height={height} {...handlers}>
-        <Rect height="100%" width="100%" fill="none" stroke="#ddd" />
+    <ChartContextProvider value={ctv}>
+      <Svg width={width} height={height}>
+        <Defs>
+          <ClipPath id="clip">
+            <Rect
+              x={_margin.left}
+              y={_margin.top}
+              width={width - _margin.left - _margin.right}
+              height={height - _margin.top - _margin.bottom}
+            />
+          </ClipPath>
+        </Defs>
+        {border && (
+          <Rect width={width} height={height} fill="none" stroke="#ddd" />
+        )}
         {children}
+        <_Internal_ExportScale
+          scaleId="_x"
+          domain={_domain}
+          scaleType={_scaleType}
+          sourceType="data"
+        />
       </Svg>
-    </ChartContext.Provider>
+    </ChartContextProvider>
   );
 }
-
-export default function Chart(props) {
+/**
+ * @typedef {Object} Props
+ * @property {Array} data
+ * @property {string | number | function} x Accessor
+ * @property {any} domain default x domain
+ * @property {number} scaleType
+ * @property {number} width
+ * @property {number} height
+ * @property {{top: number, right: number, bottom: number, left: number}} margin
+ * @property {boolean} border
+ * @param {Props} param0
+ */
+export default function Chart({ ...props }) {
   return (
-    <Inspect>
+    <ScaleManager>
       <InnerChart {...props} />
-    </Inspect>
+    </ScaleManager>
   );
 }
-/*
-const chartProps = {
-  data: PropTypes.object.isRequired,
-  xcol: PropTypes.string.isRequired,
-  xs: PropTypes.any.isRequired,
-  ys: PropTypes.any,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  margin: PropTypes.shape({
-    top: PropTypes.number,
-    right: PropTypes.number,
-    bottom: PropTypes.number,
-    left: PropTypes.number
-  })
-};
-
-Chart.propTypes = chartProps;
-InnerChart.propTypes = chartProps;
-*/
