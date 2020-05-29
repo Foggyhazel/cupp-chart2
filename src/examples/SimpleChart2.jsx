@@ -7,7 +7,6 @@ import { Button, View } from "react-native";
 import { timeMonth } from "d3-time";
 import AreaPlot from "../components/chart/AreaPlot";
 import Grid from "../components/chart/Grid";
-import { stackOffsetExpand } from "d3-shape";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];
@@ -18,14 +17,14 @@ const ta = [timeMonth];
 
 export default function SimpleChart2() {
   const tickFormat = timeFormat("%b");
-  const [y, setY] = useState(100);
+  const [y, setY] = useState(7000);
   const [, update] = useState({});
 
   return (
     <View>
       <Chart data={mock} x={xa}>
         <Grid xAxis="_x" yAxis="_y" />
-        <AreaPlot y={cols} stack stackOffset={stackOffsetExpand} />
+        <AreaPlot y={cols} stack yAxis="_y" />
         <Axis
           id="_x"
           orient="bottom"
@@ -33,9 +32,10 @@ export default function SimpleChart2() {
           tickArguments={ta}
           nice={false}
         />
-        <Axis id="_y" orient="left" />
+        <Axis id="_y" orient="left" max={y} nice={false} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
+      <Button title="Inc. Y Max" onPress={() => setY((p) => p + 20)} />
     </View>
   );
 }
