@@ -6,12 +6,13 @@ import Axis from "../components/chart/Axis";
 import LinePlot from "../components/chart/LinePlot";
 import { Button, View } from "react-native";
 import { timeMonth } from "d3-time";
+import AreaPlot from "../components/chart/AreaPlot";
 
-// move outside to avoid re-render
+// moved outside to avoid re-render
 const mock = covid["Thailand"];
 const parseDate = timeParse("%Y-%m-%d");
-const xa = (d) => parseDate(d.date);
 const cols = ["confirmed", "recovered", "deaths"];
+const xa = (d) => parseDate(d.date);
 
 export default function SimpleChart2() {
   const tickFormat = timeFormat("%b");
@@ -20,8 +21,9 @@ export default function SimpleChart2() {
 
   return (
     <View>
-      <Chart data={mock} x={xa}>
-        <LinePlot y={cols} />
+      <Chart data={mock} x={xa} margin={{ right: 40 }}>
+        <AreaPlot y={cols} />
+        <LinePlot y={cols} yAxis="y2" />
         <Axis
           id="_x"
           orient="bottom"
@@ -29,6 +31,7 @@ export default function SimpleChart2() {
           tickArguments={[timeMonth]}
         />
         <Axis id="_y" orient="left" />
+        <Axis id="y2" orient="right" max={6000} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
       <Button title="Increase" onPress={() => setY(y + 100)} />
