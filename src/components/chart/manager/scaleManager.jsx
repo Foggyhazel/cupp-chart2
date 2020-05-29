@@ -8,8 +8,7 @@ import React, {
 import { createContext, useImperativeHandle } from "react";
 import { withRef, RefManager, useRefMap } from "./refManager";
 import { useChartContext } from "./chartContext";
-import { scaleClass, scaleType } from "./scale";
-import * as d3Scale from "d3-scale";
+import { scaleClass, makeScale } from "./scale";
 import { min as d3Min, max as d3Max } from "d3-array";
 
 const ScaleContext = createContext(null);
@@ -54,23 +53,15 @@ export const _Internal_ExportScale = withRef(
   }
 );
 
-function makeScale(type, domain) {
-  switch (type) {
-    case scaleType.linear:
-      return d3Scale.scaleLinear().domain(domain).nice();
-    case scaleType.time:
-      return d3Scale.scaleTime().domain(domain).nice();
-    case scaleType.utc:
-      return d3Scale.scaleUtc().domain(domain).nice();
-    case scaleType.band:
-      return d3Scale.scaleBand().domain(domain).nice();
-    case scaleType.point:
-      return d3Scale.scalePoint().domain(domain).nice();
-    default:
-      throw new Error("not implemented");
-  }
-}
-
+/**
+ * combine many scale info eg. domain, type exported by data plot or
+ * axis into single d3 scale foreach scale id
+ *
+ * Current implementation is overriding
+ * later info with non null property and giving priority to info
+ * exported from axis
+ * @param {*} scaleInfo scale info
+ */
 function finalizeScale(scaleInfo) {
   const axisInfo = [];
   const dataInfo = [];
@@ -186,6 +177,14 @@ function ScaleManagerContent({ children }) {
   return <SMContext.Provider value={update}>{children}</SMContext.Provider>;
 }
 
+/**
+ * Read data from scale context.
+ * For internal use only as it contains internal data
+ * for to determining re-render.
+ *
+ * For general use of scale data, it is passed to
+ * scale prop by default
+ */
 function _Internal_useScale() {
   const ctv = useContext(ScaleContext);
   const prev = useRef(null);
@@ -231,7 +230,10 @@ export function ScaleManager({ children }) {
 }
 
 //TODO: skip if other's scale change
-
+/**
+ * A function passed as second argument to React.memo.
+ * Determine if plot need to be re-render by inspect __scale._render
+ */
 function doSkip(prevProps, nextProps) {
   if (nextProps.__scale != null && nextProps.__scale._render) return false;
   if (nextProps.__scale != null && !nextProps.__scale._render) return true;
@@ -241,6 +243,9 @@ function doSkip(prevProps, nextProps) {
   return false;
 }
 /**
+ * HOC that wrap any plot to handle scale info export
+ * and prevent unnecessary  re-rendering.
+ *
  * @typedef {{domain: [number, number]|function, sourceType:"axis"|"data"}} ExportScaleProps
  * @typedef {{data, exportScale: Object.<string, ExportScaleProps>}} PreComputeResult
  * @typedef {(data, props, ctx) => PreComputeResult} PreComputeFn
@@ -304,6 +309,12 @@ export const compose = (config) => (Plot) => {
   return ComposedPlot;
 };
 
+/**
+ * The sole purpose of this component is to separate
+ * useScale call from HOC composed plot to break the infinite loop
+ * which otherwise will be made by update() call from
+ * child ExportScale component and the HOC containing useScale.
+ */
 const ForwardScale = ({ data, ctx, Elem, innerProps }) => {
   const scale = _Internal_useScale();
   const getScale = useCallback(
