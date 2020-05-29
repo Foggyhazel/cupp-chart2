@@ -323,7 +323,7 @@ export const compose = (config) => (Plot) => {
       <React.Fragment>
         {exportScale &&
           Object.keys(exportScale)
-            .filter((k) => !!k && k != "undefined" && k != "null")
+            .filter((k) => !!k && k != "undefined" && k !== "null")
             .map((k) => (
               <_Internal_ExportScale key={k} {...exportScale[k]} scaleId={k} />
             ))}
