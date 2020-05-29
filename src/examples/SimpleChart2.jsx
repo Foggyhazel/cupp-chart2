@@ -8,6 +8,7 @@ import { Button, View } from "react-native";
 import { timeMonth } from "d3-time";
 import AreaPlot from "../components/chart/AreaPlot";
 import { scaleType } from "../components/chart/manager/scale";
+import Grid from "../components/chart/Grid";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];
@@ -23,6 +24,7 @@ export default function SimpleChart2() {
   return (
     <View>
       <Chart data={mock} x={xa} margin={{ right: 40 }}>
+        <Grid xAxis="_x" yAxis="_y" />
         <AreaPlot y={cols} />
         <LinePlot y={cols} yAxis="y2" />
         <Axis
