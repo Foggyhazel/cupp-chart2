@@ -3,7 +3,7 @@ import { compose } from "./manager/scaleManager";
 import { useChartContext } from "./manager/chartContext";
 import ChartAxis from "./ChartAxis";
 
-function Axis({ id, scale, orient = "left", draw = true, ...rest }) {
+function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
   const { width, height, margin } = useChartContext();
   const offsetX = {
     left: margin.left,
@@ -17,7 +17,7 @@ function Axis({ id, scale, orient = "left", draw = true, ...rest }) {
     left: 0,
     right: 0,
   }[orient];
-  return draw ? (
+  return !hide ? (
     <ChartAxis
       orient={orient}
       scale={scale(id, orient === "left" || orient === "right" ? "v" : "h")}
