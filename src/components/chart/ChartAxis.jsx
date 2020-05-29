@@ -4,7 +4,7 @@ import { Line, G, Text, Path } from "react-native-svg";
 /**
  * @typedef {Object} Props
  * @property {"left" | "right" | "top" | "bottom"} Props.orient
- * @property {"x" | "y" | {}} Props.scale  d3.scale...
+ * @property {"x" | "y" | {}} Props.rawScale  d3.scale...
  * @property {number=} offsetX    i.e. move axis inside margin
  * @property {number=} offsetY    i.e. move axis inside margin
  * @property {number} tickSize    Size of tick
