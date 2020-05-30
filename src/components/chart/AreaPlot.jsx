@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  area as d3Area,
-  curveBasis,
-  curveStepAfter,
-  curveStep,
-  curveNatural,
-} from "d3-shape";
+import { area as d3Area } from "d3-shape";
 import { useChartContext } from "./manager/chartContext";
 import { parseYAccessor } from "./helper";
 import { Path } from "react-native-svg";

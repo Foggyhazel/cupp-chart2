@@ -1,11 +1,7 @@
 import { createSelector } from "reselect";
 import { parseYAccessor, computeDomain, computeYDomain } from "./helper";
 import { getDefaultScaleType } from "./manager/scale";
-import {
-  stack as d3Stack,
-  stackOffsetDiverging,
-  stackOrderInsideOut,
-} from "d3-shape";
+import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
 
 const getData = (d) => d;
