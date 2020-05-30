@@ -3,11 +3,11 @@ import { useChartContext } from "./manager/chartContext";
 import { Line, G, Rect } from "react-native-svg";
 import { compose } from "./manager/scaleManager";
 
-function Grid({ scale, xAxis, yAxis }) {
+function Grid({ scale, xAxis, yAxis, X, Y }) {
   const { width, height, margin } = useChartContext();
 
-  const xs = scale(xAxis, "h");
-  const ys = scale(yAxis, "v");
+  const xs = scale(X ? "_x" : xAxis, "h");
+  const ys = scale(Y ? "_y" : yAxis, "v");
 
   const dy = height - margin.bottom;
   const dx = margin.left;

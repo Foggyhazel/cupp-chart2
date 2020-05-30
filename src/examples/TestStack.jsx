@@ -22,10 +22,10 @@ export default function TestStack() {
   return (
     <View>
       <Chart data={mock} x={xa} height={200}>
-        <Grid xAxis="_x" yAxis="_y" />
-        <AreaPlot y={cols} stack={stack} yAxis="_y" />
-        <Axis id="_x" orient="bottom" />
-        <Axis id="_y" nice={false} />
+        <Grid X Y />
+        <AreaPlot y={cols} stack={stack} />
+        <Axis X orient="bottom" />
+        <Axis Y nice={false} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
       <Button title="Inc. Y Max" onPress={() => setY((p) => p + 20)} />

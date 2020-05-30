@@ -6,8 +6,9 @@ import { min as d3Min, max as d3Max } from "d3-array";
 
 const getData = (d) => d;
 // don't export _x by default. Because it's already done by <Chart>
-const getXAxis = (_, props) => props.xAxis || null;
-const getYAxis = (_, props) => props.yAxis || "_y";
+// X, Y = short hand for default x and y axis. Take priority over id
+const getXAxis = (_, props) => (props.X ? "_x" : props.xAxis || null);
+const getYAxis = (_, props) => (props.Y ? "_y" : props.yAxis || "_y");
 const getXa = (_, __, ctx) => ctx.xa;
 const getYa = (_, props) => props.y;
 
@@ -15,6 +16,10 @@ const getYa = (_, props) => props.y;
 const getStack = (_, props) => props.stack || false;
 const getStackOrder = (_, props) => props.stackOrder;
 const getStackOffset = (_, props) => props.stackOffset;
+
+// short hand
+const getX = (_, props) => props.X;
+const getY = (_, props) => props.Y;
 
 export const CommonPlotConfigure = () => {
   return createSelector(
@@ -27,8 +32,10 @@ export const CommonPlotConfigure = () => {
       getStack,
       getStackOrder,
       getStackOffset,
+      getX,
+      getY,
     ],
-    (data, x, y, xa, _ya, stack, stackOrder, stackOffset) => {
+    (data, x, y, xa, _ya, stack, stackOrder, stackOffset, X, Y) => {
       console.log("%c▓▓ run selector", "color: darkorange");
       const ya = parseYAccessor(_ya);
       const xDomain = x && computeDomain(data, xa);
@@ -75,6 +82,10 @@ export const CommonPlotConfigure = () => {
       }
       //TODO: lazy domain calculation
       const yScaleType = getDefaultScaleType(yDomain[0]);
+
+      // short hand set axis id
+      if (X) setProps.xAxis = "_x";
+      if (Y) setProps.yAxis = "_y";
 
       return {
         exportScale: {

@@ -30,7 +30,7 @@ function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
 
 export default compose((_, props) => ({
   exportScale: {
-    [props.id]: {
+    [props.X ? "_x" : props.Y ? "_y" : props.id]: {
       domain: props.domain,
       min: props.min,
       max: props.max,
@@ -43,5 +43,8 @@ export default compose((_, props) => ({
         tickArguments: props.tickArguments,
       },
     },
+  },
+  setProps: {
+    id: props.X ? "_x" : props.Y ? "_y" : props.id,
   },
 }))(Axis);
