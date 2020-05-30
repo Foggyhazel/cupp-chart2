@@ -1,7 +1,11 @@
 import { createSelector } from "reselect";
 import { parseYAccessor, computeDomain, computeYDomain } from "./helper";
 import { getDefaultScaleType } from "./manager/scale";
-import { stack as d3Stack } from "d3-shape";
+import {
+  stack as d3Stack,
+  stackOffsetDiverging,
+  stackOrderInsideOut,
+} from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
 
 const getData = (d) => d;
@@ -28,7 +32,7 @@ export const CommonPlotConfigure = () => {
       getStackOrder,
       getStackOffset,
     ],
-    (data, x, y, xa, _ya, do_stack, stackOrder, stackOffset) => {
+    (data, x, y, xa, _ya, stack, stackOrder, stackOffset) => {
       console.log("%c▓▓ run selector", "color: darkorange");
       const ya = parseYAccessor(_ya);
       const xDomain = x && computeDomain(data, xa);
@@ -36,19 +40,35 @@ export const CommonPlotConfigure = () => {
 
       let setProps = {};
       //stack data
-      if (do_stack) {
-        const stack = d3Stack()
-          .keys(Object.values(ya))
-          .value((d, k) => k(d));
-        if (stackOrder) stack.order(stackOrder);
-        if (stackOffset) stack.offset(stackOffset);
-        const stackedData = stack(data);
-        setProps.stackedData = stackedData;
+      if (stack) {
+        if (typeof stack === "object") {
+          const { pos, neg } = stack;
+          const sign = new Map([
+            ...pos.map((k) => [k, 1]),
+            ...neg.map((k) => [k, -1]),
+          ]);
+          const ya = { ...parseYAccessor(pos), ...parseYAccessor(neg) };
+          const stacker = d3Stack()
+            .keys(Object.keys(ya))
+            .value((d, k) => ya[k](d) * sign.get(k))
+            .offset(stackOffsetDiverging);
+          if (stackOrder) stacker.order(stackOrder);
+          const stackedData = stacker(data);
+          setProps.stackedData = stackedData;
+        } else {
+          const stacker = d3Stack()
+            .keys(Object.keys(ya))
+            .value((d, k) => ya[k](d));
+          if (stackOrder) stacker.order(stackOrder);
+          if (stackOffset) stacker.offset(stackOffset);
+          const stackedData = stacker(data);
+          setProps.stackedData = stackedData;
+        }
       }
 
       // domain
       let yDomain;
-      if (do_stack) {
+      if (stack) {
         const stackedData = setProps.stackedData;
         yDomain = [
           d3Min(stackedData, (s) => d3Min(s, (d) => d[0])),

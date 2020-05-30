@@ -1,5 +1,11 @@
 import React from "react";
-import { area as d3Area } from "d3-shape";
+import {
+  area as d3Area,
+  curveBasis,
+  curveStepAfter,
+  curveStep,
+  curveNatural,
+} from "d3-shape";
 import { useChartContext } from "./manager/chartContext";
 import { parseYAccessor } from "./helper";
 import { Path } from "react-native-svg";
@@ -7,7 +13,14 @@ import { compose } from "./manager/scaleManager";
 
 import { CommonPlotConfigure } from "./selectors";
 
-const color = ["red", "green", "blue"];
+const color = [
+  "#d53e4f",
+  "#fc8d59",
+  "#fee08b",
+  "#3288bd",
+  "#99d594",
+  "#e6f598",
+];
 
 function AreaPlot({
   scale,
@@ -37,7 +50,7 @@ function AreaPlot({
       .y1((d) => sy(d[1]));
 
     return stackedData.map((s, i) => (
-      <Path key={i} d={area(s)} {...commonProps} fill={color[i]} />
+      <Path key={i} d={area(s)} {...commonProps} fill={color[s.index]} />
     ));
   } else {
     area = d3Area()

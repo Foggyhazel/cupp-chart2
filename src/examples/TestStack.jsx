@@ -9,6 +9,10 @@ import randData from "./data/rand";
 // moved outside to avoid re-render
 const mock = randData;
 const cols = ["hottest", "hot", "warm"];
+const stack = {
+  pos: ["hottest", "hot", "warm"],
+  neg: ["freeze", "cold", "cool"],
+};
 const xa = "month";
 
 export default function TestStack() {
@@ -19,9 +23,9 @@ export default function TestStack() {
     <View>
       <Chart data={mock} x={xa} height={200}>
         <Grid xAxis="_x" yAxis="_y" />
-        <AreaPlot y={cols} stack yAxis="_y" />
+        <AreaPlot y={cols} stack={stack} yAxis="_y" />
         <Axis id="_x" orient="bottom" />
-        <Axis id="_y" tickArguments={[5]} max={2.5} nice={false} />
+        <Axis id="_y" nice={false} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
       <Button title="Inc. Y Max" onPress={() => setY((p) => p + 20)} />
