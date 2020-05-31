@@ -3,7 +3,7 @@ import { useChartContext } from "./manager/chartContext";
 import { Line, G, Rect } from "react-native-svg";
 import { compose } from "./manager/scaleManager";
 
-function Grid({ scale, xAxis, yAxis, X, Y }) {
+function Grid({ scale, xAxis, yAxis, X, Y, noBorder }) {
   const { width, height, margin } = useChartContext();
 
   const xs = scale(X ? "_x" : xAxis, "h");
@@ -51,14 +51,16 @@ function Grid({ scale, xAxis, yAxis, X, Y }) {
 
   return (
     <G>
-      <Rect
-        x={margin.left}
-        y={margin.top}
-        width={width - margin.right - margin.left}
-        height={height - margin.top - margin.bottom}
-        fill="none"
-        stroke="#eee"
-      />
+      {!noBorder && (
+        <Rect
+          x={margin.left}
+          y={margin.top}
+          width={width - margin.right - margin.left}
+          height={height - margin.top - margin.bottom}
+          fill="none"
+          stroke="#eee"
+        />
+      )}
       {xTick && xTick.map((t) => renderXLine(xs(t), t))}
       {yTick && yTick.map((t) => renderYLine(ys(t), t))}
     </G>
