@@ -33,9 +33,10 @@ export const _Internal_ExportInfo = withRef(
     // domain is an array [number, number] or () => [number, number]
     const update = useContext(SMContext);
     const getScaleInfo = useCallback(() => {
-      const _d = domain || [];
+      let _d = domain || [];
       min != null && (_d[0] = min);
       max != null && (_d[1] = max);
+      if (_d.length == 0) _d = null;
       return {
         scaleId,
         domain: _d,
