@@ -51,7 +51,7 @@ function AreaPlot({
       .x((d) => sx(xa(d)))
       .y0(() => sy(0));
 
-    return Object.values(ya).map((a, i) => (
+    return [...ya.values()].map((a, i) => (
       <Path
         key={i}
         d={area.y1((d) => sy(a(d)))(data)}

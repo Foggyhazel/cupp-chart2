@@ -15,7 +15,7 @@ function LinePlot({ scale, y, xAxis = "_x", yAxis = "_y" }) {
   const line = d3Line().x((d) => sx(xa(d)));
   return (
     <>
-      {Object.values(ya).map((a, i) => (
+      {[...ya.values()].map((a, i) => (
         <Path
           key={i}
           clipPath="url(#clip)"

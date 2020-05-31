@@ -37,17 +37,16 @@ export function parseAccessor(accessor) {
 }
 
 export function parseYAccessor(y) {
-  let _y;
+  let _y = new Map();
   switch (typeof y) {
     case "string":
-      _y = { [y]: parseAccessor(y) };
+      _y.set(y, parseAccessor(y));
       break;
     case "object":
-      _y = {};
       if (Array.isArray(y)) {
-        y.forEach((ya) => (_y[ya] = parseAccessor(ya)));
+        y.forEach((ya) => _y.set(ya, parseAccessor(ya)));
       } else {
-        Object.keys(y).forEach((k) => (_y[k] = parseAccessor(y[k])));
+        Object.keys(y).forEach((k) => _y.set(k, parseAccessor(y[k])));
       }
       break;
     default:

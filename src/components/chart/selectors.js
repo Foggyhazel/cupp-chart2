@@ -46,22 +46,26 @@ export const CommonPlotConfigure = () => {
       if (stack) {
         if (typeof stack === "object") {
           const { pos, neg } = stack;
+
+          const ya = new Map([...parseYAccessor(pos), ...parseYAccessor(neg)]);
           const sign = new Map([
             ...pos.map((k) => [k, 1]),
             ...neg.map((k) => [k, -1]),
           ]);
-          const ya = { ...parseYAccessor(pos), ...parseYAccessor(neg) };
+
           const stacker = d3Stack()
-            .keys(Object.keys(ya))
-            .value((d, k) => ya[k](d) * sign.get(k))
+            .keys([...ya.keys()])
+            .value((d, k) => {
+              return ya.get(k)(d) * sign.get(k);
+            })
             .offset(stackOffsetDiverging);
           if (stackOrder) stacker.order(stackOrder);
           const stackedData = stacker(data);
           setProps.stackedData = stackedData;
         } else {
           const stacker = d3Stack()
-            .keys(Object.keys(ya))
-            .value((d, k) => ya[k](d));
+            .keys([...ya.keys()])
+            .value((d, k) => ya.get(k)(d));
           if (stackOrder) stacker.order(stackOrder);
           if (stackOffset) stacker.offset(stackOffset);
           const stackedData = stacker(data);

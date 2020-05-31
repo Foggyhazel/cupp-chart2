@@ -3,6 +3,7 @@ import Chart from "../components/chart/Chart";
 import Axis from "../components/chart/Axis";
 import { Button, View } from "react-native";
 import AreaPlot from "../components/chart/AreaPlot";
+import LinePlot from "../components/chart/LinePlot";
 import Grid from "../components/chart/Grid";
 import randData from "./data/rand";
 
@@ -10,25 +11,24 @@ import randData from "./data/rand";
 const mock = randData;
 const cols = ["hottest", "hot", "warm"];
 const stack = {
-  pos: ["hottest", "hot", "warm"],
+  pos: ["hottest", "hot", (d) => d.warm],
   neg: ["freeze", "cold", "cool"],
 };
 const xa = "month";
 
 export default function TestStack() {
-  const [, setY] = useState(7000);
   const [, update] = useState({});
 
   return (
     <View>
       <Chart data={mock} x={xa} height={200}>
-        <Grid X Y />
+        <Grid X />
         <AreaPlot y={cols} stack={stack} />
+        <LinePlot y={cols} />
         <Axis X orient="bottom" />
-        <Axis Y nice={false} />
+        <Axis Y min={-3} max={3} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
-      <Button title="Inc. Y Max" onPress={() => setY((p) => p + 20)} />
     </View>
   );
 }
