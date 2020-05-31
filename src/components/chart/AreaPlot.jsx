@@ -1,5 +1,5 @@
 import React from "react";
-import { area as d3Area } from "d3-shape";
+import { area as d3Area, curveLinear } from "d3-shape";
 import { useChartContext } from "./manager/chartContext";
 import { parseYAccessor } from "./helper";
 import { Path } from "react-native-svg";
@@ -23,6 +23,7 @@ function AreaPlot({
   yAxis = "_y",
   stack,
   stackedData,
+  curve = curveLinear,
 }) {
   const { data, xa } = useChartContext();
   const ya = parseYAccessor(y);
@@ -41,7 +42,8 @@ function AreaPlot({
     area = d3Area()
       .x((d) => sx(xa(d.data)))
       .y0((d) => sy(d[0]))
-      .y1((d) => sy(d[1]));
+      .y1((d) => sy(d[1]))
+      .curve(curve);
 
     return stackedData.map((s, i) => (
       <Path key={i} d={area(s)} {...commonProps} fill={color[s.index]} />
@@ -49,7 +51,8 @@ function AreaPlot({
   } else {
     area = d3Area()
       .x((d) => sx(xa(d)))
-      .y0(() => sy(0));
+      .y0(() => sy(0))
+      .curve(curve);
 
     return [...ya.values()].map((a, i) => (
       <Path

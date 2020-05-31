@@ -1,5 +1,5 @@
 import React from "react";
-import { line as d3Line } from "d3-shape";
+import { line as d3Line, curveLinear } from "d3-shape";
 import { useChartContext } from "./manager/chartContext";
 import { parseYAccessor } from "./helper";
 import { Path } from "react-native-svg";
@@ -7,12 +7,20 @@ import { compose } from "./manager/scaleManager";
 
 import { CommonPlotConfigure } from "./selectors";
 
-function LinePlot({ scale, y, xAxis = "_x", yAxis = "_y" }) {
+function LinePlot({
+  scale,
+  y,
+  xAxis = "_x",
+  yAxis = "_y",
+  curve = curveLinear,
+}) {
   const { data, xa } = useChartContext();
   const ya = parseYAccessor(y);
   const sx = scale(xAxis, "h");
   const sy = scale(yAxis, "v");
-  const line = d3Line().x((d) => sx(xa(d)));
+  const line = d3Line()
+    .x((d) => sx(xa(d)))
+    .curve(curve);
   return (
     <>
       {[...ya.values()].map((a, i) => (
