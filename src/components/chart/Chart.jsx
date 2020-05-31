@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { ChartContextProvider } from "./manager/chartContext";
 import Svg, { Defs, ClipPath, Rect } from "react-native-svg";
 import { computeDomain, parseAccessor, firstData } from "./helper";
-import { ScaleManager, _Internal_ExportScale } from "./manager/scaleManager";
+import { ScaleManager, _Internal_ExportInfo } from "./manager/scaleManager";
 import { getDefaultScaleType, scaleClass } from "./manager/scale";
 
 const defaultMargin = {
@@ -78,7 +78,7 @@ function InnerChart({
           <Rect width={width} height={height} fill="none" stroke="#ddd" />
         )}
         {children}
-        <_Internal_ExportScale
+        <_Internal_ExportInfo
           scaleId="_x"
           domain={_domain}
           scaleType={_scaleType}

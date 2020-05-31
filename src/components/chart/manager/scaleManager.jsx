@@ -25,49 +25,50 @@ const SMContext = createContext({});
 
  * @type {React.FunctionComponent<{scaleId: string, domain: Array, scaleType: number, sourceType:"data"|"axis" }>} _Internal_ExportScale
  */
-export const _Internal_ExportScale = withRef(
+export const _Internal_ExportInfo = withRef(
   (
     { scaleId, domain, min, max, scaleType, sourceType = "data", option = {} },
     ref
   ) => {
     // domain is an array [number, number] or () => [number, number]
     const update = useContext(SMContext);
+    const getScaleInfo = useCallback(() => {
+      const _d = domain || [];
+      min != null && (_d[0] = min);
+      max != null && (_d[1] = max);
+      return {
+        scaleId,
+        domain: _d,
+        sourceType,
+        scaleType: scaleType || null,
+        option: {
+          nice: option.nice,
+          tickValues: option.tickValues,
+          tickArguments: option.tickArguments,
+        },
+      };
+    }, [
+      domain,
+      max,
+      min,
+      option.nice,
+      option.tickArguments,
+      option.tickValues,
+      scaleId,
+      scaleType,
+      sourceType,
+    ]);
     useImperativeHandle(
       ref,
       () => {
         update();
         console.log("change export ");
-        const _d = domain || [];
-        min != null && (_d[0] = min);
-        max != null && (_d[1] = max);
+
         return {
-          getScaleInfo: () => {
-            return {
-              scaleId,
-              domain: _d,
-              sourceType,
-              scaleType: scaleType || null,
-              option: {
-                nice: option.nice,
-                tickValues: option.tickValues,
-                tickArguments: option.tickArguments,
-              },
-            };
-          },
+          getScaleInfo,
         };
       },
-      [
-        update,
-        scaleId,
-        domain,
-        min,
-        max,
-        sourceType,
-        scaleType,
-        option.nice,
-        option.tickValues,
-        option.tickArguments,
-      ]
+      [update, getScaleInfo]
     );
   }
 );
@@ -329,7 +330,7 @@ export const compose = (config) => (Plot) => {
           Object.keys(exportScale)
             .filter((k) => !!k && k != "undefined" && k !== "null")
             .map((k) => (
-              <_Internal_ExportScale key={k} {...exportScale[k]} scaleId={k} />
+              <_Internal_ExportInfo key={k} {...exportScale[k]} scaleId={k} />
             ))}
         <ForwardScale
           data={data}
