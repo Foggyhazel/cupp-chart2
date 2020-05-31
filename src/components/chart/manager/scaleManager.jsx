@@ -46,6 +46,9 @@ export const _Internal_ExportInfo = withRef(
           nice: option.nice,
           tickValues: option.tickValues,
           tickArguments: option.tickArguments,
+          padding: option.padding,
+          paddingInner: option.paddingInner,
+          paddingOuter: option.paddingOuter,
         },
       };
     }, [
@@ -53,12 +56,16 @@ export const _Internal_ExportInfo = withRef(
       max,
       min,
       option.nice,
+      option.padding,
+      option.paddingInner,
+      option.paddingOuter,
       option.tickArguments,
       option.tickValues,
       scaleId,
       scaleType,
       sourceType,
     ]);
+    // next edit makeScale()
     useImperativeHandle(
       ref,
       () => {
@@ -91,6 +98,8 @@ function finalizeScale(scaleInfo) {
   scaleInfo.forEach((si) =>
     si.sourceType === "data" ? dataInfo.push(si) : axisInfo.push(si)
   );
+
+  dataInfo.reverse();
 
   let map = {};
   const override = ({ scaleId, domain, scaleType, sourceType, option }) => {
@@ -132,7 +141,12 @@ function finalizeScale(scaleInfo) {
     if (!s.option) {
       s.option = {};
     }
-    _.assign(s.option, option);
+
+    if (sourceType === "data") {
+      _.defaults(s.option, option);
+    } else {
+      s.option = _.defaults({ ...option }, s.option);
+    }
   };
 
   dataInfo.forEach((i) => override(i));

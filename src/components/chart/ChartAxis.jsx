@@ -78,11 +78,13 @@ export default function ChartAxis({
   }[orient];
 
   //TODO: minimize #component
+  const offset =
+    typeof rawScale.bandwidth === "function" ? 0.5 * rawScale.bandwidth() : 0;
   const renderTick = (tickValue, key) => {
     const xform =
       orient === "left" || orient === "right"
-        ? `translate(0, ${rawScale(tickValue)})`
-        : `translate(${rawScale(tickValue)}, 0)`;
+        ? `translate(0, ${rawScale(tickValue) - offset})`
+        : `translate(${rawScale(tickValue) + offset}, 0)`;
     return (
       <G transform={xform} key={key}>
         <Line {...tickEnd} strokeWidth={1} stroke="black" />

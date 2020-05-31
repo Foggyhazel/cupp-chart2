@@ -70,5 +70,11 @@ export function makeScale(type, domain, option = {}) {
     scale.nice();
   }
 
+  if (type & scaleType.band) {
+    if (option.padding != null) scale.padding(option.padding);
+    if (option.paddingInner != null) scale.paddingInner(option.paddingInner);
+    if (option.paddingOuter != null) scale.paddingOuter(option.paddingOuter);
+  }
+
   return scale;
 }

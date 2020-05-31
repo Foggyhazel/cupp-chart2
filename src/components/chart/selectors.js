@@ -1,8 +1,9 @@
 import { createSelector } from "reselect";
 import { parseYAccessor, computeDomain, computeYDomain } from "./helper";
-import { getDefaultScaleType } from "./manager/scale";
+import { getDefaultScaleType, scaleType } from "./manager/scale";
 import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
+import _ from "lodash";
 
 const getData = (d) => d;
 // don't export _x by default. Because it's already done by <Chart>
@@ -93,7 +94,7 @@ export const CommonPlotConfigure = () => {
 
       // replace Axis with default/specified
       setProps.xAxis = x == null ? "_x" : x;
-      setProps.yAxis = x == null ? "_y" : y;
+      setProps.yAxis = y == null ? "_y" : y;
 
       // replace accessor with the parsed one
       setProps.y = ya;
@@ -116,4 +117,29 @@ export const CommonPlotConfigure = () => {
       };
     }
   );
+};
+
+export const BandPlotConfigure = () => {
+  const commonSelector = CommonPlotConfigure();
+  return (data, props, ctx) => {
+    const commonResult = commonSelector(data, props, ctx);
+    const { padding, paddingInner, paddingOuter } = props;
+    const xAxis = props.xAxis || "_x";
+
+    const bandResult = {
+      exportScale: {
+        [xAxis]: {
+          sourceType: "data",
+          scaleType: scaleType.band,
+          option: {
+            padding,
+            paddingInner,
+            paddingOuter,
+          },
+        },
+      },
+    };
+
+    return _.merge(commonResult, bandResult);
+  };
 };
