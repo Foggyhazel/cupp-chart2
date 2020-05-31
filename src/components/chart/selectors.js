@@ -91,6 +91,14 @@ export const CommonPlotConfigure = () => {
       if (X) setProps.xAxis = "_x";
       if (Y) setProps.yAxis = "_y";
 
+      // replace Axis with default/specified
+      setProps.xAxis = x == null ? "_x" : x;
+      setProps.yAxis = x == null ? "_y" : y;
+
+      // replace accessor with the parsed one
+      setProps.y = ya;
+      setProps.x = xa;
+
       return {
         exportScale: {
           [x]: {
