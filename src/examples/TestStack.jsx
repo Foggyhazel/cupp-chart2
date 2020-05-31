@@ -25,16 +25,17 @@ export default function TestStack() {
 
   return (
     <View>
-      <Chart data={mock} x={xa} height={200}>
+      <Chart data={mock} x={xa} height={250}>
         <Grid X />
         <AreaPlot y={cols} stack={stack} curve={curveMonotoneX} />
-        <LinePlot y={cols} curve={curveMonotoneX} />
+        <LinePlot y={cols} curve={curveMonotoneX} yAxis="y2" />
         <Marker x="Mar" y={2.8} dot={2} line="y" />
-        <ScatterPlot y={cols} />
+        <ScatterPlot y={cols} yAxis="y2" />
         <Axis X orient="bottom" nice={false} />
         <Axis Y min={-3.5} max={3.5} tickArguments={ta} tickSizeOuter={0} />
+        <Axis id="y2" orient="right" max={3} />
       </Chart>
-      <Button title="Update" onPress={() => update({})} />
+      {/*<Button title="Update" onPress={() => update({})} />*/}
     </View>
   );
 }

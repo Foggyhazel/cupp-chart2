@@ -14,15 +14,15 @@ const parseDate = timeParse("%Y-%m-%d");
 const cols = ["confirmed", "recovered", "deaths"];
 const xa = (d) => parseDate(d.date);
 const ta = [timeMonth];
+const tay = [6];
 
 export default function SimpleChart2() {
   const tickFormat = timeFormat("%b");
-  const [y, setY] = useState(7000);
   const [, update] = useState({});
 
   return (
     <View>
-      <Chart data={mock} x={xa}>
+      <Chart data={mock} x={xa} height={200}>
         <Grid xAxis="_x" yAxis="_y" />
         <AreaPlot y={cols} stack yAxis="_y" />
         <Axis
@@ -32,10 +32,9 @@ export default function SimpleChart2() {
           tickArguments={ta}
           nice={false}
         />
-        <Axis id="_y" orient="left" max={y} nice={false} />
+        <Axis Y orient="left" nice={false} tickArguments={tay} />
       </Chart>
-      <Button title="Update" onPress={() => update({})} />
-      <Button title="Inc. Y Max" onPress={() => setY((p) => p + 20)} />
+      {/*<Button title="Update" onPress={() => update({})} />*/}
     </View>
   );
 }
