@@ -18,25 +18,34 @@ export function getDefaultScale(sample) {
 */
 
 export function parseAccessor(accessor) {
+  if (accessor._parsed) return accessor;
+  let a;
   switch (typeof accessor) {
     case "string": {
       const paths = accessor.split(".");
       if (paths.length === 1) {
-        return (d) => d[accessor];
+        a = (d) => d[accessor];
+        break;
       } else {
-        return (d) => paths.reduce((p, c) => p[c], d);
+        a = (d) => paths.reduce((p, c) => p[c], d);
+        break;
       }
     }
     case "number":
-      return (d) => d[accessor];
+      a = (d) => d[accessor];
+      break;
     case "function":
-      return accessor;
+      a = accessor;
+      break;
     default:
       throw new Error("invalid data accessor");
   }
+  a._parsed = true;
+  return a;
 }
 
 export function parseYAccessor(y) {
+  if (y._parsed) return y;
   let _y = new Map();
   switch (typeof y) {
     case "string":
@@ -52,6 +61,7 @@ export function parseYAccessor(y) {
     default:
       throw new Error("Invalid y accessor(s)");
   }
+  _y._parsed = true;
   return _y;
 }
 
@@ -73,8 +83,8 @@ export function computeDomain(data, accessor) {
   }
 }
 
-export function computeYDomain(data, accessorObj) {
-  const allExtent = Object.values(accessorObj).map((ya) =>
+export function computeYDomain(data, accessorMap) {
+  const allExtent = [...accessorMap.values()].map((ya) =>
     computeDomain(data, ya)
   );
   return [d3Min(allExtent, (e) => e[0]), d3Max(allExtent, (e) => e[1])];
