@@ -2,7 +2,7 @@ import React from "react";
 import { compose } from "./manager/scaleManager";
 import { useChartContext } from "./manager/chartContext";
 import ChartAxis from "./ChartAxis";
-
+//TODO: auto orient axis
 function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
   const { width, height, margin } = useChartContext();
   const offsetX = {
