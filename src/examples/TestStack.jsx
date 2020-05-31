@@ -8,7 +8,7 @@ import Grid from "../components/chart/Grid";
 import randData from "./data/rand";
 import { curveMonotoneX } from "d3-shape";
 import ScatterPlot from "../components/chart/ScatterPlot";
-import { scaleType } from "../components/chart/manager/scale";
+import Marker from "../components/chart/Marker";
 
 // moved outside to avoid re-render
 const mock = randData;
@@ -18,6 +18,7 @@ const stack = {
   neg: ["freeze", "cold", "cool"],
 };
 const xa = "month";
+const ta = [5];
 
 export default function TestStack() {
   const [, update] = useState({});
@@ -28,9 +29,10 @@ export default function TestStack() {
         <Grid X />
         <AreaPlot y={cols} stack={stack} curve={curveMonotoneX} />
         <LinePlot y={cols} curve={curveMonotoneX} />
+        <Marker x="Mar" y={2.8} dot={2} line="y" />
         <ScatterPlot y={cols} />
         <Axis X orient="bottom" nice={false} />
-        <Axis Y min={-3} max={3} />
+        <Axis Y min={-3.5} max={3.5} tickArguments={ta} tickSizeOuter={0} />
       </Chart>
       <Button title="Update" onPress={() => update({})} />
     </View>
