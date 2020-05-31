@@ -1,5 +1,6 @@
 const data = [
   {
+    x: 1,
     month: "Jan",
     hottest: 0.682206384,
     hot: 0.029971027,
@@ -9,6 +10,7 @@ const data = [
     cool: 0.054205734,
   },
   {
+    x: 2,
     month: "Feb",
     hottest: 0.745467972,
     hot: 0.549479842,
@@ -18,6 +20,7 @@ const data = [
     cool: 0.974199727,
   },
   {
+    x: 4,
     month: "Mar",
     hottest: 0.280046843,
     hot: 0.614618603,
@@ -27,6 +30,7 @@ const data = [
     cool: 0.130913638,
   },
   {
+    x: 7,
     month: "Apr",
     hottest: 0.743982772,
     hot: 0.751646942,
@@ -36,6 +40,7 @@ const data = [
     cool: 0.440023616,
   },
   {
+    x: 11,
     month: "May",
     hottest: 0.051204943,
     hot: 0.932242097,
@@ -45,6 +50,7 @@ const data = [
     cool: 0.676380631,
   },
   {
+    x: 14,
     month: "Jun",
     hottest: 0.532719934,
     hot: 0.105281842,
@@ -54,6 +60,7 @@ const data = [
     cool: 0.2720634,
   },
   {
+    x: 20,
     month: "Jul",
     hottest: 0.326939655,
     hot: 0.262043081,
@@ -63,6 +70,7 @@ const data = [
     cool: 0.306821312,
   },
   {
+    x: 27,
     month: "Aug",
     hottest: 0.933867499,
     hot: 0.100016624,
@@ -72,6 +80,7 @@ const data = [
     cool: 0.389613137,
   },
   {
+    x: 35,
     month: "Sep",
     hottest: 0.076121898,
     hot: 0.368301219,
@@ -81,6 +90,7 @@ const data = [
     cool: 0.47066269,
   },
   {
+    x: 44,
     month: "Oct",
     hottest: 0.641133001,
     hot: 0.005034171,
@@ -90,6 +100,7 @@ const data = [
     cool: 0.650253247,
   },
   {
+    x: 54,
     month: "Nov",
     hottest: 0.295337937,
     hot: 0.122073926,
