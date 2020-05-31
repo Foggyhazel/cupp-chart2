@@ -1,22 +1,5 @@
 import { extent, min as d3Min, max as d3Max } from "d3-array";
 
-/*
-export function getDefaultScale(sample) {
-  const type = typeof sample;
-  switch (type) {
-    case "string":
-      return d3Scale.scalePoint();
-    case "number":
-      return d3Scale.scaleLinear();
-    case "object":
-      if (sample instanceof Date) return d3Scale.scaleTime();
-      return null;
-    default:
-      return null;
-  }
-}
-*/
-
 export function parseAccessor(accessor) {
   if (accessor._parsed) return accessor;
   let a;
