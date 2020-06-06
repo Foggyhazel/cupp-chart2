@@ -16,5 +16,6 @@ export const unexportData = (channel, key) =>
     key: key,
   });
 
+// these are kind of incomplete action types, intended to be called with channel name
 export const chEXPORT = (channel) => chType(channel, EXPORT);
 export const chUNEXPORT = (channel) => chType(channel, UNEXPORT);

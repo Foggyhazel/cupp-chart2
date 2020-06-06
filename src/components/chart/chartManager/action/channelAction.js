@@ -14,4 +14,5 @@ export const commitActions = (channel, actions) => ({
 
 const COMMIT = "commit";
 
+// these are kind of incomplete action types, intended to be called with channel name
 export const chCOMMIT = (channel) => chType(channel, COMMIT);
