@@ -7,7 +7,7 @@ import useKey from "./useKey";
 /**
  * export data to central store to be processed by reducer
  */
-const ExportData = connect()(({ channel, data, enabled = true, dispatch }) => {
+function ExportData({ channel, data, enabled = true, dispatch }) {
   const myKey = useKey();
   const scheduleCommit = useScheduleCommit();
 
@@ -23,6 +23,6 @@ const ExportData = connect()(({ channel, data, enabled = true, dispatch }) => {
   }, [channel, data, dispatch, myKey, scheduleCommit, enabled]);
 
   return null;
-});
+}
 
-export default ExportData;
+export default connect()(ExportData);
