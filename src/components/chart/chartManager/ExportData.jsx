@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useScheduleCommit } from "./ChartManager";
-import useKey from "../manager/useKey";
 import { exportData, unexportData } from "./action/exportData";
+import useKey from "./useKey";
 
 /**
  * export data to central store to be processed by reducer

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, forwardRef, useContext } from "react";
 import { createContext, useRef } from "react";
 import MultiRef from "react-multi-ref";
-import useKey from "./useKey";
+import useKey from "../chartManager/useKey";
 
 export const RefContext = createContext();
 
