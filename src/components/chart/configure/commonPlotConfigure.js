@@ -110,7 +110,7 @@ export default function commonPlotConfigure() {
 
       return {
         data,
-        export: {
+        exportData: {
           scale: exportScale,
         },
         setProps,

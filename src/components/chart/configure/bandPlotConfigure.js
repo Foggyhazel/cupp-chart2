@@ -16,7 +16,7 @@ export default function bandPlotConfigure() {
     [commonConfigure, getXAxis, getPadding, getPaddingInner, getPaddingOuter],
     (common, xAxis, padding, paddingInner, paddingOuter) => {
       const band = {
-        export: {
+        exportData: {
           scale: {
             [xAxis]: {
               sourceType: "data",
