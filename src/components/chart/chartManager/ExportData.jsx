@@ -6,7 +6,6 @@ import { exportData, unexportData } from "./action/exportData";
 
 /**
  * export data to central store to be processed by reducer
- *
  */
 const ExportData = connect()(({ channel, data, enabled = true, dispatch }) => {
   const myKey = useKey();
