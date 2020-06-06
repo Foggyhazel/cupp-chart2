@@ -9,6 +9,7 @@ import {
 import { getDefaultScaleType } from "../manager/scale";
 import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
+import { PassScaleXY } from "./connectors";
 
 const getData = (data, props) => props.data || data;
 const getXAxis = (_, props) =>
@@ -42,8 +43,13 @@ export default function commonPlotConfigure() {
       const exportScale = {};
       const setProps = {};
 
+      // set default x, y axis name
       setProps.xAxis = xAxis;
       setProps.yAxis = yAxis;
+
+      // replace accessor with the parsed one
+      setProps.x = pXa;
+      setProps.y = pYa;
 
       // stack data
       if (stack) {
@@ -114,6 +120,7 @@ export default function commonPlotConfigure() {
           scale: exportScale,
         },
         setProps,
+        connector: PassScaleXY,
       };
     }
   );
