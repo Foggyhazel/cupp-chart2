@@ -1,4 +1,4 @@
-import { commitActionType, chType } from "../channel/utils";
+import { chType } from "../channel";
 
 export const COMMIT_CHANNEL = "COMMIT_CHANNEL";
 
@@ -8,7 +8,7 @@ export const commitChannel = (channel = null) => ({
 });
 
 export const commitActions = (channel, actions) => ({
-  type: commitActionType(channel),
+  type: chCOMMIT(channel),
   actions: actions,
 });
 
