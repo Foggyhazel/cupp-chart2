@@ -49,6 +49,12 @@ function mergeInfo(dst, src) {
     dst._progress |= checked.scaleType;
   }
 
+  // option
+  if (!dst.option) dst.option = {};
+  if (src.option) {
+    dst.option = { ...src.option, ...dst.option };
+  }
+
   // domain
   const { min, max, domain } = src;
 
@@ -109,7 +115,7 @@ function mergeInfo(dst, src) {
       const t = getDefaultScaleType(ds != null ? ds : ms);
 
       const pt = dst._expectType;
-      console.log(pt);
+      //console.log(pt);
       if (pt & scaleClass.continuous && t & scaleClass.continuous) {
         // fill domain if matched, otherwise reject
         const pd = dst.domain || [];
@@ -126,7 +132,7 @@ function mergeInfo(dst, src) {
       } else if (!pt) {
         // no prev type and, thus, no domain data
         dst._expectType = t;
-        console.log("set new", t);
+        //console.log("set new", t);
         if (t & scaleClass.continuous) {
           dst.domain = [
             min != null ? min : d[0] != null ? d[0] : null,

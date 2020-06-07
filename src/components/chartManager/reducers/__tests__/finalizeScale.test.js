@@ -57,6 +57,28 @@ describe("finalizeScale function", () => {
     });
   });
 
+  describe("How it compute option", () => {
+    const o1 = { id: "x", source: "axis" };
+    const o2 = { id: "x", source: "axis", option: {} };
+    const o3 = { id: "x", source: "axis", option: { tickValue: [0, 1, 2] } };
+    const o4 = { id: "x", source: "axis", option: { tickArguments: [5] } };
+    const o5 = { id: "x", source: "axis", option: { tickArguments: [88] } };
+
+    test("Empty option, return option: {}", () => {
+      expect(finalizeScale([o1, o1]).get("x")).toMatchObject({ option: {} });
+      expect(finalizeScale([o1, o2]).get("x")).toMatchObject({ option: {} });
+    });
+
+    test("option is correctly overwritten", () => {
+      expect(finalizeScale([o2, o3, o4, o5]).get("x")).toMatchObject({
+        option: {
+          tickValue: [0, 1, 2],
+          tickArguments: [88],
+        },
+      });
+    });
+  });
+
   describe("How it compute domain", () => {
     const t_data_fnDomainHalfNull = {
       id: "x",
