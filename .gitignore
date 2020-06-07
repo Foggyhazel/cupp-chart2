@@ -16,3 +16,5 @@ web-report/
 .vscode/settings.json
 src/components/chart/.old/*
 .vscode/.react/*
+
+coverage/**/*
