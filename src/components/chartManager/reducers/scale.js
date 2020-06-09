@@ -1,6 +1,7 @@
 import { chEXPORT, chUNEXPORT } from "../action/exportData";
 import { chCOMMIT } from "../action/channelAction";
 import { scaleClass, getDefaultScaleType } from "../../manager/scale";
+import _ from "lodash";
 
 const CH = "scale";
 
@@ -8,10 +9,15 @@ const SCALE_EXPORT = chEXPORT(CH);
 const SCALE_UNEXPORT = chUNEXPORT(CH);
 const SCALE_COMMIT = chCOMMIT(CH);
 
-function scale(state = { exportedScale: {}, map: {} }, action) {
+const initialState = {
+  exportedScale: {},
+  map: new Map(),
+};
+
+function scale(state = initialState, action) {
   switch (action.type) {
     case SCALE_EXPORT:
-      console.log("EXPORT");
+      //console.log("EXPORT");
       return {
         ...state,
         exportedScale: { ...state.exportedScale, [action.key]: action.data },
@@ -24,15 +30,32 @@ function scale(state = { exportedScale: {}, map: {} }, action) {
         exportedScale: rest,
       };
     }
-    case SCALE_COMMIT:
-      console.log("COMMIT", state.exportedScale);
-      return state;
+    case SCALE_COMMIT: {
+      const changedScaleData = getChangedScaleFromActions(
+        state.exportedScale,
+        action.actions
+      );
+
+      if (Object.keys(changedScaleData).length == 0) return state;
+
+      const finalizedMap = finalizeScale(changedScaleData);
+      return {
+        ...state,
+        map: new Map([...state.map, ...finalizedMap]),
+      };
+    }
     default:
       return state;
   }
 }
 
 export default scale;
+
+function getChangedScaleFromActions(exportedScale, actions) {
+  const ids = new Set();
+  actions.forEach((a) => ids.add(a.data.id));
+  return _.pickBy(exportedScale, (info) => ids.has(info.id));
+}
 
 const checked = {
   scaleType: 1,
@@ -144,9 +167,6 @@ function mergeInfo(dst, src) {
       }
     }
   }
-
-  if (dst._progress == checked.completed) return true;
-  else return false;
 }
 
 export function finalizeScale(exportedScale) {
@@ -193,8 +213,7 @@ export function finalizeScale(exportedScale) {
 
   for (let i = sorted.length - 1; i >= 0; i -= 1) {
     const current = getOrSet(sorted[i].id);
-    const isComplete = mergeInfo(current, sorted[i]);
-    if (isComplete) break;
+    mergeInfo(current, sorted[i]);
   }
 
   return results;
