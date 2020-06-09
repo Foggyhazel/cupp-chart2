@@ -1,4 +1,4 @@
-import { chAction, chType } from "../channel";
+import { chAction, chType } from "./channelAction";
 
 const EXPORT = "export";
 const UNEXPORT = "unexport";
