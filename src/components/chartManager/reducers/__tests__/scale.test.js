@@ -1,8 +1,8 @@
 import scale from "../scale";
 import { exportData, unexportData } from "../../action/exportData";
-import { scaleType } from "../../../manager/scale";
 import { commitActions } from "../../action/channelAction";
 import _ from "lodash";
+import { scaleType } from "../../scalefn";
 
 const initialState = {
   exportedScale: {},
@@ -11,7 +11,7 @@ const initialState = {
 
 const removeUnusedProperty = (nextState) => {
   nextState.map.forEach((v, k) =>
-    nextState.map.set(k, _.omit(v, ["_expectType", "_progress"]))
+    nextState.map.set(k, _.omit(v, ["_expectType", "_progress", "scale"]))
   );
 };
 
