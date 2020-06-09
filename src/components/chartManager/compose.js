@@ -43,7 +43,7 @@ const compose = (config) => (Plot) => {
         })}
         {Connector ? (
           <Connector
-            Elem={Plot}
+            Plot={Plot}
             innerProps={{ ...ownProps, ...setProps, data }}
           />
         ) : (
