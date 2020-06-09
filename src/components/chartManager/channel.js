@@ -1,16 +1,6 @@
 import { commitActions } from "./action/channelAction";
 import { COMMIT_CHANNEL } from "./action/channelAction";
 
-export function chAction(channel, action) {
-  action._channel = channel;
-  action.type = channel + "." + action.type;
-  return action;
-}
-
-export function chType(channel, actionType) {
-  return channel + "." + actionType;
-}
-
 export function createChannelMiddleware() {
   const channel = {};
   const commitChannel = (next, ch) => {
