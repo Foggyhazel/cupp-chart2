@@ -3,17 +3,16 @@ import { connect } from "react-redux";
 import { useChartContext } from "../chartManager/chartContext";
 import { createSelector } from "reselect";
 
-const getXAxis = (_, props) => props.innerProps.xAxis;
-const getYAxis = (_, props) => props.innerProps.yAxis;
-const getXScale = (state, props) => state.scale.map.get(props.innerProps.xAxis);
-const getYScale = (state, props) => state.scale.map.get(props.innerProps.yAxis);
+const getXAxis = (_, props) => props.xAxis;
+const getYAxis = (_, props) => props.yAxis;
+const getXScale = (state, props) => state.scale.map.get(props.xAxis);
+const getYScale = (state, props) => state.scale.map.get(props.yAxis);
 
 function makeScaleXYSelector() {
   return createSelector(
     [getXAxis, getYAxis, getXScale, getYScale],
     (xAxis, yAxis, xScale, yScale) => {
       if (!xScale || !yScale) return null;
-
       return {
         [xAxis]: xScale,
         [yAxis]: yScale,
@@ -30,7 +29,7 @@ function makeMapStateToProps() {
 }
 
 export const PassScaleXY = connect(makeMapStateToProps)(
-  ({ scaleDict, Plot, innerProps }) => {
+  ({ scaleDict, Plot, ...innerProps }) => {
     const ctx = useChartContext();
 
     const scale = useCallback(
