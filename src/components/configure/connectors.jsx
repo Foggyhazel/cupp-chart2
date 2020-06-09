@@ -4,9 +4,9 @@ import { useChartContext } from "../chartManager/chartContext";
 import { createSelector } from "reselect";
 
 const getXAxis = (_, props) => props.innerProps.xAxis;
-const getYAxis = (_, props) => props.innerProps.YAxis;
-const getXScale = (state, props) => state.scale.map[props.innerProps.xAxis];
-const getYScale = (state, props) => state.scale.map[props.innerProps.yAxis];
+const getYAxis = (_, props) => props.innerProps.yAxis;
+const getXScale = (state, props) => state.scale.map.get(props.innerProps.xAxis);
+const getYScale = (state, props) => state.scale.map.get(props.innerProps.yAxis);
 
 function makeScaleXYSelector() {
   return createSelector(
@@ -25,20 +25,20 @@ function makeScaleXYSelector() {
 function makeMapStateToProps() {
   const scaleSelector = makeScaleXYSelector();
   return (state, props) => ({
-    scaleMap: scaleSelector(state, props),
+    scaleDict: scaleSelector(state, props),
   });
 }
 
 export const PassScaleXY = connect(makeMapStateToProps)(
-  ({ scaleMap, Elem, innerProps }) => {
+  ({ scaleDict, Plot, innerProps }) => {
     const ctx = useChartContext();
 
     const scale = useCallback(
       (id, orient) => {
         if (id == null) return null;
-        if (scaleMap == null) return null;
+        if (scaleDict == null) return null;
 
-        const s = (scaleMap[id] && scaleMap[id].scale) || null;
+        const s = (scaleDict[id] && scaleDict[id].scale) || null;
         if (s) {
           const _s = s.copy();
           const {
@@ -48,17 +48,23 @@ export const PassScaleXY = connect(makeMapStateToProps)(
           } = ctx;
           if (orient === "h") _s.range([left, width - right]);
           if (orient === "v") _s.range([height - bottom, top]);
-          _s.scaleType = scale.map[id].scaleType;
-          _s.option = scale.map[id].option;
+          _s.scaleType = scaleDict[id].scaleType;
+          _s.option = scaleDict[id].option;
           return _s;
         }
         return null;
       },
-      [ctx, scaleMap]
+      [ctx, scaleDict]
     );
 
-    if (!scaleMap) return null;
+    if (!scaleDict) return null;
 
-    return <Elem {...innerProps} scale={scale} />;
+    console.log(
+      "%c render ",
+      "background: orange; color: black; border-radius: 4px",
+      `<${Plot.name} ${innerProps.id || ""}>`
+    );
+
+    return <Plot {...innerProps} scale={scale} />;
   }
 );
