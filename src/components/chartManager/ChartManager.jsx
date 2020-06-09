@@ -7,11 +7,12 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import { commitChannel } from "./action/channelAction";
+import StoreProvider from "./StoreProvider";
 
 const CommitContext = createContext(null);
 export const useScheduleCommit = () => useContext(CommitContext);
 
-const ChartManager = connect()(({ children, dispatch }) => {
+const CommitProvider = connect()(({ children, dispatch }) => {
   const [, forceUpdate] = useState({});
 
   const scheduleCommit = useCallback(() => {
@@ -27,5 +28,13 @@ const ChartManager = connect()(({ children, dispatch }) => {
     </CommitContext.Provider>
   );
 });
+
+const ChartManager = ({ children }) => {
+  return (
+    <StoreProvider>
+      <CommitProvider>{children}</CommitProvider>
+    </StoreProvider>
+  );
+};
 
 export default ChartManager;
