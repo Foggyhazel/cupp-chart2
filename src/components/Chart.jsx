@@ -1,9 +1,12 @@
 import React, { useMemo } from "react";
-import { ChartContextProvider } from "./manager/chartContext";
+
 import Svg, { Defs, ClipPath, Rect } from "react-native-svg";
 import { computeDomain, parseAccessor, firstData } from "./helper";
-import { ScaleManager, _Internal_ExportInfo } from "./manager/scaleManager";
-import { getDefaultScaleType, scaleClass } from "./manager/scale";
+
+import ChartManager from "./chartManager/ChartManager";
+import ExportData from "./chartManager/ExportData";
+import { scaleClass, getDefaultScaleType } from "./chartManager/scalefn";
+import { ChartContextProvider } from "./chartManager/chartContext";
 
 const defaultMargin = {
   top: 20,
@@ -16,7 +19,7 @@ const dw = 400;
 const dh = 300;
 
 //TODO: handle empty data and x accessor
-function InnerChart({
+export function Chart({
   data = [],
   x,
   domain = null,
@@ -54,57 +57,61 @@ function InnerChart({
     }
   }, [_scaleType, data, domain, xa]);
 
-  const ctv = {
-    data,
-    width,
-    height,
-    margin: _margin,
-    xa,
-  };
+  const exportScaleX = useMemo(() => {
+    return {
+      id: "_x",
+      domain: _domain,
+      source: "data",
+      scaleType: _scaleType,
+    };
+  }, [_domain, _scaleType]);
+
+  const ctv = useMemo(
+    () => ({
+      data,
+      width,
+      height,
+      margin: {
+        top: _margin.top,
+        right: _margin.right,
+        bottom: _margin.bottom,
+        left: _margin.left,
+      },
+      xa,
+    }),
+    [
+      _margin.bottom,
+      _margin.left,
+      _margin.right,
+      _margin.top,
+      data,
+      height,
+      width,
+      xa,
+    ]
+  );
 
   return (
-    <ChartContextProvider value={ctv}>
-      <Svg width={width} height={height}>
-        <Defs>
-          <ClipPath id="clip">
-            <Rect
-              x={_margin.left}
-              y={_margin.top}
-              width={width - _margin.left - _margin.right}
-              height={height - _margin.top - _margin.bottom}
-            />
-          </ClipPath>
-        </Defs>
-        {border && (
-          <Rect width={width} height={height} fill="none" stroke="#ddd" />
-        )}
-        {children}
-        <_Internal_ExportInfo
-          scaleId="_x"
-          domain={_domain}
-          scaleType={_scaleType}
-          sourceType="data"
-        />
-      </Svg>
-    </ChartContextProvider>
-  );
-}
-/**
- * @typedef {Object} Props
- * @property {Array} data
- * @property {string | number | function} x Accessor
- * @property {any} domain default x domain
- * @property {number} scaleType
- * @property {number} width
- * @property {number} height
- * @property {{top: number, right: number, bottom: number, left: number}} margin
- * @property {boolean} border
- * @param {Props} param0
- */
-export default function Chart({ ...props }) {
-  return (
-    <ScaleManager>
-      <InnerChart {...props} />
-    </ScaleManager>
+    <ChartManager>
+      <ChartContextProvider value={ctv}>
+        <Svg width={width} height={height}>
+          <Defs>
+            <ClipPath id="clip">
+              <Rect
+                x={_margin.left}
+                y={_margin.top}
+                width={width - _margin.left - _margin.right}
+                height={height - _margin.top - _margin.bottom}
+              />
+            </ClipPath>
+          </Defs>
+          {border && (
+            <Rect width={width} height={height} fill="none" stroke="#ddd" />
+          )}
+          {children}
+          <ExportData channel="scale" data={exportScaleX} />
+        </Svg>
+      </ChartContextProvider>
+    </ChartManager>
   );
 }
