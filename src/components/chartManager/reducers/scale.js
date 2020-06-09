@@ -1,7 +1,7 @@
 import { chEXPORT, chUNEXPORT } from "../action/exportData";
 import { chCOMMIT } from "../action/channelAction";
-import { scaleClass, getDefaultScaleType } from "../../manager/scale";
 import _ from "lodash";
+import { scaleClass, getDefaultScaleType, makeScale } from "../scalefn";
 
 const CH = "scale";
 
@@ -17,7 +17,11 @@ const initialState = {
 function scale(state = initialState, action) {
   switch (action.type) {
     case SCALE_EXPORT:
-      //console.log("EXPORT");
+      console.log(
+        "%cEXPORT",
+        "background: dodgerblue; color:white",
+        action.data
+      );
       return {
         ...state,
         exportedScale: { ...state.exportedScale, [action.key]: action.data },
@@ -31,6 +35,7 @@ function scale(state = initialState, action) {
       };
     }
     case SCALE_COMMIT: {
+      console.log("%cCOMMIT", "background: green; color:white");
       const changedScaleData = getChangedScaleFromActions(
         state.exportedScale,
         action.actions
@@ -39,6 +44,11 @@ function scale(state = initialState, action) {
       if (Object.keys(changedScaleData).length == 0) return state;
 
       const finalizedMap = finalizeScale(changedScaleData);
+      // make scale
+      finalizedMap.forEach((m) => {
+        m.scale = makeScale(m.scaleType, m.domain, m.option);
+      });
+      console.log(finalizedMap);
       return {
         ...state,
         map: new Map([...state.map, ...finalizedMap]),
@@ -54,7 +64,8 @@ export default scale;
 function getChangedScaleFromActions(exportedScale, actions) {
   const ids = new Set();
   actions.forEach((a) => ids.add(a.data.id));
-  return _.pickBy(exportedScale, (info) => ids.has(info.id));
+  const changedScaleData = _.pickBy(exportedScale, (info) => ids.has(info.id));
+  return changedScaleData;
 }
 
 const checked = {
