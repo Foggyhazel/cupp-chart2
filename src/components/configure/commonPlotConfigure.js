@@ -6,10 +6,10 @@ import {
   firstData,
   computeYDomain,
 } from "../helper";
-import { getDefaultScaleType } from "../manager/scale";
 import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
 import { PassScaleXY } from "./connectors";
+import { getDefaultScaleType } from "../chartManager/scalefn";
 
 const getData = (data, props) => props.data || data;
 const getXAxis = (_, props) =>
@@ -91,7 +91,7 @@ export default function commonPlotConfigure() {
           d3Max(stackedData, (s) => d3Max(s, (d) => d[1])),
         ];
       } else {
-        yDomain = () => computeYDomain(data, ya);
+        yDomain = () => computeYDomain(data, pYa);
       }
 
       // only export x if it's not the default "_x"
@@ -110,7 +110,7 @@ export default function commonPlotConfigure() {
         domain: yDomain,
         source: "data",
         scaleType: getDefaultScaleType(
-          firstData(data, pYa.entries().next().value)
+          firstData(data, pYa.values().next().value)
         ),
       };
 
