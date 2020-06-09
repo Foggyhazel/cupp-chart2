@@ -1,5 +1,5 @@
 import { finalizeScale } from "../scale";
-import { scaleType } from "../../../manager/scale";
+import { scaleType } from "../../scalefn";
 
 describe("finalizeScale function", () => {
   test("Given null or undefined -> return null.", () => {
