@@ -195,6 +195,8 @@ describe("finalizeScale function", () => {
       const a1 = { id: "x", domain: ["a", "b", "c"], source: "axis" };
       const a2 = { id: "x", domain: [10, 20], source: "axis" };
       const a3 = { id: "x", domain: [9, null], source: "axis" };
+      const a4 = { id: "x", min: -17, max: 17, source: "axis" };
+      const a5 = { id: "x", max: 22, source: "axis" };
 
       const d1 = {
         id: "x",
@@ -208,6 +210,18 @@ describe("finalizeScale function", () => {
         scaleType: scaleType.linear,
         source: "data",
       };
+
+      test("Axis min/max override data domain", () => {
+        expect(finalizeScale([a4, d2]).get("x")).toMatchObject({
+          domain: [-17, 17],
+        });
+        expect(finalizeScale([a5, d2]).get("x")).toMatchObject({
+          domain: [1, 22],
+        });
+        expect(finalizeScale([a4, a5]).get("x")).toMatchObject({
+          domain: [-17, 22],
+        });
+      });
 
       test("Null cannot override", () => {
         expect(finalizeScale([a2, a3]).get("x")).toMatchObject({
