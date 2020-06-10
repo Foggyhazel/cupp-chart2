@@ -37,6 +37,7 @@ export default function commonPlotConfigure() {
       getStackOffset,
     ],
     (data, xAxis, yAxis, xa, ya, stack, stackOrder, stackOffset) => {
+      console.log("run configure...");
       const pXa = parseAccessor(xa);
       const pYa = parseYAccessor(ya);
 
