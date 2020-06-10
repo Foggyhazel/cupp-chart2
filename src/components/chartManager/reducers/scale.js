@@ -63,7 +63,7 @@ export default scale;
 
 function getChangedScaleFromActions(exportedScale, actions) {
   const ids = new Set();
-  actions.forEach((a) => ids.add(a.data.id));
+  actions.forEach((a) => ids.add(exportedScale[a.key].id));
   const changedScaleData = _.pickBy(exportedScale, (info) => ids.has(info.id));
   return changedScaleData;
 }
