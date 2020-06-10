@@ -32,15 +32,16 @@ const compose = (config) => (Plot) => {
 
     return (
       <React.Fragment>
-        {Object.keys(exportData).map((channel) => {
-          let data = exportData[channel];
-          if (typeof data === "object" && !Array.isArray(data)) {
-            data = Object.values(data);
-          }
-          return data.map((d, i) => (
-            <ExportData key={i} channel={channel} data={d} />
-          ));
-        })}
+        {exportData &&
+          Object.keys(exportData).map((channel) => {
+            let data = exportData[channel];
+            if (typeof data === "object" && !Array.isArray(data)) {
+              data = Object.values(data);
+            }
+            return data.map((d, i) => (
+              <ExportData key={i} channel={channel} data={d} />
+            ));
+          })}
         {Connector ? (
           <Connector Plot={Plot} {...ownProps} {...setProps} data={data} />
         ) : (
