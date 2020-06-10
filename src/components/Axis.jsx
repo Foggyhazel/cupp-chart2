@@ -1,7 +1,8 @@
 import React from "react";
-import { compose } from "./manager/scaleManager";
-import { useChartContext } from "./manager/chartContext";
 import ChartAxis from "./ChartAxis";
+import { useChartContext } from "./chartManager/chartContext";
+import compose from "./chartManager/compose";
+import axisConfigure from "./configure/axisConfigure";
 //TODO: auto orient axis
 function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
   const { width, height, margin } = useChartContext();
@@ -28,23 +29,4 @@ function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
   ) : null;
 }
 
-export default compose((_, props) => ({
-  exportScale: {
-    [props.X ? "_x" : props.Y ? "_y" : props.id]: {
-      domain: props.domain,
-      min: props.min,
-      max: props.max,
-      sourceType: "axis",
-      scaleType: props.scaleType,
-      option: {
-        // don't forget to edit ExportScale
-        nice: props.nice != null ? props.nice : true,
-        tickValues: props.tickValues,
-        tickArguments: props.tickArguments,
-      },
-    },
-  },
-  setProps: {
-    id: props.X ? "_x" : props.Y ? "_y" : props.id,
-  },
-}))(Axis);
+export default compose(axisConfigure)(Axis);

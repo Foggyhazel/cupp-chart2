@@ -1,7 +1,8 @@
 import React from "react";
-import { useChartContext } from "./manager/chartContext";
 import { Line, G, Rect } from "react-native-svg";
-import { compose } from "./manager/scaleManager";
+import compose from "./chartManager/compose";
+import { PassScaleXY } from "./configure/connectors";
+import { useChartContext } from "./chartManager/chartContext";
 
 function Grid({ scale, xAxis, yAxis, X, Y, noBorder }) {
   const { width, height, margin } = useChartContext();
@@ -67,4 +68,10 @@ function Grid({ scale, xAxis, yAxis, X, Y, noBorder }) {
   );
 }
 
-export default compose(null)(Grid);
+export default compose((_, props) => ({
+  setProps: {
+    xAxis: props.X ? "_x" : props.xAxis || null,
+    yAxis: props.Y ? "_y" : props.yAxis || null,
+  },
+  connector: PassScaleXY,
+}))(Grid);
