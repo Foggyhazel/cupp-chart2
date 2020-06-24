@@ -1,7 +1,7 @@
 import commonPlotConfigure from "./commonPlotConfigure";
 import { createSelector } from "reselect";
-import { scaleType } from "../manager/scale";
 import _ from "lodash";
+import { scaleType } from "../chartManager/scalefn";
 
 const getXAxis = (_, props) =>
   props.X ? "_x" : props.xAxis ? props.xAxis : "_x";
@@ -19,7 +19,8 @@ export default function bandPlotConfigure() {
         exportData: {
           scale: {
             [xAxis]: {
-              sourceType: "data",
+              id: xAxis,
+              source: "plot",
               scaleType: scaleType.band,
               option: {
                 padding,

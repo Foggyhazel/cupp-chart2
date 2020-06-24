@@ -1,8 +1,8 @@
 import React from "react";
 import lettersData from "./data/letters.json";
-import Axis from "../components/chart/Axis";
-import Chart from "../components/chart/Chart";
-import BarPlot from "../components/chart/BarPlot";
+import { Chart } from "../components/Chart";
+import BarPlot from "../components/BarPlot";
+import Axis from "../components/Axis";
 
 export default function TestBar() {
   return (
