@@ -55,9 +55,11 @@ export default function commonPlotConfigure() {
       // stack data
       if (stack) {
         if (typeof stack === "object") {
+          // stack up/down
           const { pos, neg } = stack;
 
           const ya = new Map([...parseYAccessor(pos), ...parseYAccessor(neg)]);
+          console.log(ya);
           const sign = new Map([
             ...pos.map((k) => [k, 1]),
             ...neg.map((k) => [k, -1]),
@@ -73,9 +75,10 @@ export default function commonPlotConfigure() {
           const stackedData = stacker(data);
           setProps.stackedData = stackedData;
         } else {
+          // simple stack
           const stacker = d3Stack()
-            .keys([...ya.keys()])
-            .value((d, k) => ya.get(k)(d));
+            .keys([...pYa.keys()])
+            .value((d, k) => pYa.get(k)(d));
           if (stackOrder) stacker.order(stackOrder);
           if (stackOffset) stacker.offset(stackOffset);
           const stackedData = stacker(data);

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import Chart from "../components/chart/Chart";
-import Axis from "../components/chart/Axis";
 import { Button, View } from "react-native";
-import AreaPlot from "../components/chart/AreaPlot";
-import LinePlot from "../components/chart/LinePlot";
-import Grid from "../components/chart/Grid";
+
 import randData from "./data/rand";
 import { curveMonotoneX } from "d3-shape";
-import ScatterPlot from "../components/chart/ScatterPlot";
-import Marker from "../components/chart/Marker";
+import { Chart } from "../components/Chart";
+import Grid from "../components/Grid";
+import AreaPlot from "../components/AreaPlot";
+import LinePlot from "../components/LinePlot";
+import Marker from "../components/Marker";
+import ScatterPlot from "../components/ScatterPlot";
+import Axis from "../components/Axis";
 
 // moved outside to avoid re-render
 const mock = randData;
@@ -20,7 +21,7 @@ const stack = {
 const xa = "month";
 const ta = [5];
 
-export default function TestStack() {
+export default function TestMultiPlot() {
   const [, update] = useState({});
 
   return (
