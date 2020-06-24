@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import covid from "./data/covid.json";
-import Chart from "../components/chart/Chart";
 import { timeParse, timeFormat } from "d3-time-format";
-import Axis from "../components/chart/Axis";
 import { timeMonth } from "d3-time";
-import Grid from "../components/chart/Grid";
-import LinePlot from "../components/chart/LinePlot";
+import { Chart } from "../components/Chart";
+
+import LinePlot from "../components/LinePlot";
+import { View, Button } from "react-native";
+import Axis from "../components/Axis";
+import Grid from "../components/Grid";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];
@@ -17,18 +19,16 @@ const tay = [6];
 const tickFormat = timeFormat("%b");
 
 export default function TestLine() {
+  const [, setU] = useState({});
   return (
-    <Chart data={mock} x={xa}>
-      <Grid Y noBorder />
-      <LinePlot y={cols} />
-      <Axis
-        id="_x"
-        orient="bottom"
-        tickFormat={tickFormat}
-        tickArguments={ta}
-        nice={false}
-      />
-      <Axis Y orient="left" tickArguments={tay} />
-    </Chart>
+    <View>
+      <Chart data={mock} x={xa}>
+        <Grid Y />
+        <LinePlot y={cols} />
+        <Axis X orient="bottom" tickArguments={ta} tickFormat={tickFormat} />
+        <Axis Y tickArguments={tay} />
+      </Chart>
+      <Button title="update" onPress={() => setU({})} />
+    </View>
   );
 }

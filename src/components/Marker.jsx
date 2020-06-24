@@ -1,7 +1,8 @@
 import React from "react";
 import { Line, Circle, G } from "react-native-svg";
-import { compose } from "./manager/scaleManager";
-import { useChartContext } from "./manager/chartContext";
+import { useChartContext } from "./chartManager/chartContext";
+import compose from "./chartManager/compose";
+import { PassScaleXY } from "./configure/connectors";
 
 function Marker({ scale, xAxis, yAxis, dot = false, line = "both", x, y }) {
   const { width, height, margin } = useChartContext();
@@ -49,5 +50,8 @@ export default compose((_, props) => {
   const setProps = {};
   if (props.x) setProps.xAxis = props.xAxis || "_x";
   if (props.y) setProps.yAxis = props.yAxis || "_y";
-  return { setProps };
+  return {
+    setProps,
+    connector: PassScaleXY,
+  };
 })(Marker);

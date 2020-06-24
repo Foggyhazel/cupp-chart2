@@ -1,9 +1,8 @@
 import React from "react";
 import { line as d3Line, curveLinear } from "d3-shape";
 import { Path } from "react-native-svg";
-import { compose } from "./manager/scaleManager";
-
-import { CommonPlotConfigure } from "./selectors";
+import compose from "./chartManager/compose";
+import commonPlotConfigure from "./configure/commonPlotConfigure";
 
 function LinePlot({
   data,
@@ -35,4 +34,4 @@ function LinePlot({
   );
 }
 
-export default compose(CommonPlotConfigure)(LinePlot);
+export default compose(commonPlotConfigure)(LinePlot);
