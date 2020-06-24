@@ -1,7 +1,7 @@
 import React from "react";
 import { Circle, G } from "react-native-svg";
-import { compose } from "./manager/scaleManager";
-import { CommonPlotConfigure } from "./selectors";
+import compose from "./chartManager/compose";
+import commonPlotConfigure from "./configure/commonPlotConfigure";
 
 function ScatterPlot({
   data,
@@ -35,4 +35,4 @@ function ScatterPlot({
   );
 }
 
-export default compose(CommonPlotConfigure)(ScatterPlot);
+export default compose(commonPlotConfigure)(ScatterPlot);
