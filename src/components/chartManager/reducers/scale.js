@@ -35,7 +35,6 @@ function scale(state = initialState, action) {
       };
     }
     case SCALE_COMMIT: {
-      console.log("%cCOMMIT", "background: green; color:white");
       const changedScaleData = getChangedScaleFromActions(
         state.exportedScale,
         action.actions
@@ -44,11 +43,11 @@ function scale(state = initialState, action) {
       if (Object.keys(changedScaleData).length == 0) return state;
 
       const finalizedMap = finalizeScale(changedScaleData);
+      console.log("%cCOMMIT", "background: green; color:white", finalizedMap);
       // make scale
       finalizedMap.forEach((m) => {
         m.scale = makeScale(m.scaleType, m.domain, m.option);
       });
-      console.log(finalizedMap);
       return {
         ...state,
         map: new Map([...state.map, ...finalizedMap]),
