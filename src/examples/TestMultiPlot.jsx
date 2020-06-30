@@ -36,7 +36,7 @@ export default function TestMultiPlot() {
         <Axis Y min={-3.5} max={3.5} tickArguments={ta} tickSizeOuter={0} />
         <Axis id="y2" orient="right" max={3} />
       </Chart>
-      {/*<Button title="Update" onPress={() => update({})} />*/}
+      <Button title="Update" onPress={() => update({})} />
     </View>
   );
 }

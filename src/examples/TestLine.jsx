@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
 import { timeMonth } from "d3-time";
 import { Chart } from "../components/Chart";
 
 import LinePlot from "../components/LinePlot";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import Axis from "../components/Axis";
 import Grid from "../components/Grid";
 
@@ -19,7 +19,6 @@ const tay = [6];
 const tickFormat = timeFormat("%b");
 
 export default function TestLine() {
-  const [, setU] = useState({});
   return (
     <View>
       <Chart data={mock} x={xa}>
@@ -28,7 +27,6 @@ export default function TestLine() {
         <Axis X orient="bottom" tickArguments={ta} tickFormat={tickFormat} />
         <Axis Y tickArguments={tay} />
       </Chart>
-      <Button title="update" onPress={() => setU({})} />
     </View>
   );
 }
