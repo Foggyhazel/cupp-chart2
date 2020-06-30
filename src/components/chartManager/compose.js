@@ -13,6 +13,7 @@ const compose = (config) => (Plot) => {
 
     let data, exportData, setProps, inject;
     const connector = useRef(null);
+    const require = useRef(null);
 
     if (config) {
       let configObj;
@@ -28,12 +29,13 @@ const compose = (config) => (Plot) => {
         }
       }
       ({ data, exportData, setProps, inject } = configObj);
-      if (connector.current == null)
+      if (connector.current == null) {
         connector.current = makeConnector(inject, ctx);
+        require.current = Object.keys(inject);
+      }
     }
 
     const Connector = connector.current;
-    const require = useMemo(() => Object.keys(inject), [inject]);
 
     return (
       <React.Fragment>
@@ -49,7 +51,7 @@ const compose = (config) => (Plot) => {
           })}
         {Connector ? (
           <Connector
-            _require={require}
+            _require={require.current}
             Plot={Plot}
             {...ownProps}
             {...setProps}
