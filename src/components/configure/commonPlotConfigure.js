@@ -8,8 +8,8 @@ import {
 } from "../helper";
 import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
-import { PassScaleXY } from "./connectors";
 import { getDefaultScaleType } from "../chartManager/scalefn";
+import { makeScaleFactory } from "./factory/makeScaleFactory";
 
 const getData = (data, props) => props.data || data;
 const getXAxis = (_, props) =>
@@ -24,6 +24,9 @@ const getStack = (_, props) => props.stack || false;
 const getStackOrder = (_, props) => props.stackOrder;
 const getStackOffset = (_, props) => props.stackOffset;
 
+// ctx
+const getCtx = (_, __, ctx) => ctx;
+
 export default function commonPlotConfigure() {
   return createSelector(
     [
@@ -35,6 +38,7 @@ export default function commonPlotConfigure() {
       getStack,
       getStackOrder,
       getStackOffset,
+      getCtx,
     ],
     (data, xAxis, yAxis, xa, ya, stack, stackOrder, stackOffset) => {
       console.log("run configure...");
@@ -59,7 +63,6 @@ export default function commonPlotConfigure() {
           const { pos, neg } = stack;
 
           const ya = new Map([...parseYAccessor(pos), ...parseYAccessor(neg)]);
-          console.log(ya);
           const sign = new Map([
             ...pos.map((k) => [k, 1]),
             ...neg.map((k) => [k, -1]),
@@ -124,7 +127,9 @@ export default function commonPlotConfigure() {
           scale: exportScale,
         },
         setProps,
-        connector: PassScaleXY,
+        inject: {
+          scale: makeScaleFactory([setProps.xAxis, setProps.yAxis]),
+        },
       };
     }
   );

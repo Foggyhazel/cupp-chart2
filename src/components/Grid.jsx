@@ -1,8 +1,8 @@
 import React from "react";
 import { Line, G, Rect } from "react-native-svg";
 import compose from "./chartManager/compose";
-import { PassScaleXY } from "./configure/connectors";
 import { useChartContext } from "./chartManager/chartContext";
+import { makeScaleFactory } from "./configure/factory/makeScaleFactory";
 
 function Grid({ scale, xAxis, yAxis, X, Y, noBorder }) {
   const { width, height, margin } = useChartContext();
@@ -68,10 +68,16 @@ function Grid({ scale, xAxis, yAxis, X, Y, noBorder }) {
   );
 }
 
-export default compose((_, props) => ({
-  setProps: {
-    xAxis: props.X ? "_x" : props.xAxis || null,
-    yAxis: props.Y ? "_y" : props.yAxis || null,
-  },
-  connector: PassScaleXY,
-}))(Grid);
+export default compose((_, props) => {
+  const xAxis = props.X ? "_x" : props.xAxis || null;
+  const yAxis = props.Y ? "_y" : props.yAxis || null;
+  return {
+    setProps: {
+      xAxis,
+      yAxis,
+    },
+    inject: {
+      scale: makeScaleFactory([xAxis, yAxis]),
+    },
+  };
+})(Grid);

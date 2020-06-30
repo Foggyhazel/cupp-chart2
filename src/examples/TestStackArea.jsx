@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
-import { Button, View } from "react-native";
+import { View, Button } from "react-native";
 import { timeMonth } from "d3-time";
 import { Chart } from "../components/Chart";
 import Grid from "../components/Grid";
@@ -24,7 +24,7 @@ export default function StackArea() {
     <View>
       <Chart data={mock} x={xa} height={200}>
         <Grid xAxis="_x" yAxis="_y" />
-        <AreaPlot y={cols} stack yAxis="_y" />
+        <AreaPlot y={cols} stack />
         <Axis
           id="_x"
           orient="bottom"
@@ -34,7 +34,7 @@ export default function StackArea() {
         />
         <Axis Y orient="left" nice={false} tickArguments={tay} />
       </Chart>
-      {/*<Button title="Update" onPress={() => update({})} />*/}
+      <Button title="Update" onPress={() => update({})} />
     </View>
   );
 }
