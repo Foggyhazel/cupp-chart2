@@ -32,6 +32,12 @@ function Connector({ Plot, _require, ...innerProps }) {
 
   if (!pass) return null;
 
+  console.log(
+    "%c render ",
+    "background: orange; color: black; border-radius: 4px",
+    `<${Plot.name} ${innerProps.id || ""}>`
+  );
+
   return <Plot {...innerProps} />;
 }
 
