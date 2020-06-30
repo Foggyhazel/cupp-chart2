@@ -19,7 +19,7 @@ export default function App() {
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          <TestLine />
+          <TestMultiPlot />
         </ScrollView>
         <Button title="Update" onPress={() => update({})} />
       </SafeAreaView>

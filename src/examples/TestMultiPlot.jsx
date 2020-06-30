@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, View } from "react-native";
+import React from "react";
+import { View } from "react-native";
 
 import randData from "./data/rand";
 import { curveMonotoneX } from "d3-shape";
@@ -22,8 +22,6 @@ const xa = "month";
 const ta = [5];
 
 export default function TestMultiPlot() {
-  const [, update] = useState({});
-
   return (
     <View>
       <Chart data={mock} x={xa} height={250}>
@@ -36,7 +34,6 @@ export default function TestMultiPlot() {
         <Axis Y min={-3.5} max={3.5} tickArguments={ta} tickSizeOuter={0} />
         <Axis id="y2" orient="right" max={3} />
       </Chart>
-      <Button title="Update" onPress={() => update({})} />
     </View>
   );
 }

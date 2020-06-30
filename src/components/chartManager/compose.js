@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import { useChartContext } from "./chartContext";
 import ExportData from "./ExportData";
 import { makeConnector } from "./makeConnector";
@@ -11,7 +11,7 @@ const compose = (config) => (Plot) => {
     const ctx = useChartContext();
     const selectorRef = useRef(null);
 
-    let data, exportData, setProps, inject, require;
+    let data, exportData, setProps, inject;
     const connector = useRef(null);
 
     if (config) {
@@ -27,12 +27,13 @@ const compose = (config) => (Plot) => {
           configObj = r;
         }
       }
-      ({ data, exportData, setProps, inject, require } = configObj);
+      ({ data, exportData, setProps, inject } = configObj);
       if (connector.current == null)
         connector.current = makeConnector(inject, ctx);
     }
 
     const Connector = connector.current;
+    const require = useMemo(() => Object.keys(inject), [inject]);
 
     return (
       <React.Fragment>
@@ -48,7 +49,7 @@ const compose = (config) => (Plot) => {
           })}
         {Connector ? (
           <Connector
-            _require={require ? require : Object.keys(inject)}
+            _require={require}
             Plot={Plot}
             {...ownProps}
             {...setProps}
