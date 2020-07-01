@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
-import { getID, PassScaleByID } from "./connectors";
+import makeScaleFactory from "./factory/makeScaleFactory";
 
+export const getID = (_, props) => (props.X ? "_x" : props.Y ? "_y" : props.id);
 const getDomain = (_, props) => props.domain;
 const getMin = (_, props) => props.min;
 const getMax = (_, props) => props.max;
@@ -42,7 +43,9 @@ export default function axisConfigure() {
       setProps: {
         id,
       },
-      connector: PassScaleByID,
+      inject: () => ({
+        scale: makeScaleFactory([(props) => props.id]),
+      }),
     })
   );
 }
