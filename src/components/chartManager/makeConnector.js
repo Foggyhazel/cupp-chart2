@@ -30,7 +30,14 @@ const makeConnector = (factoryDict) => {
       if (props[k] == null) pass = false;
     });
 
-    return pass ? <Plot {...props} /> : null;
+    if (!pass) return null;
+
+    console.log(
+      "%c render ",
+      "background: orange; color: black; border-radius: 4px",
+      `<${Plot.name} ${props.id || ""}>`
+    );
+    return <Plot {...props} />;
   });
 
   return Connector;
