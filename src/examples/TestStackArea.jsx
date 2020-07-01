@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
-import { Button, View } from "react-native";
+import { View } from "react-native";
 import { timeMonth } from "d3-time";
 import { Chart } from "../components/Chart";
 import Grid from "../components/Grid";
@@ -18,7 +18,6 @@ const tay = [6];
 
 export default function StackArea() {
   const tickFormat = timeFormat("%b");
-  const [, update] = useState({});
 
   return (
     <View>
@@ -34,7 +33,6 @@ export default function StackArea() {
         />
         <Axis Y orient="left" nice={false} tickArguments={tay} />
       </Chart>
-      {/*<Button title="Update" onPress={() => update({})} />*/}
     </View>
   );
 }

@@ -19,7 +19,7 @@ const dw = 400;
 const dh = 300;
 
 //TODO: handle empty data and x accessor
-export function Chart({
+export default function Chart({
   data = [],
   x,
   domain = null,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
 import { timeMonth } from "d3-time";
-import { Chart } from "../components/Chart";
+import Chart from "../components/Chart";
 
 import LinePlot from "../components/LinePlot";
 import { View, Button } from "react-native";
