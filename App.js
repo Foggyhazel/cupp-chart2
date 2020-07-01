@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
 
 import TestLine from "./src/examples/TestLine";
-import TestHousePrice from "./src/examples/TestHousePrice";
+import TestScatter from "./src/examples/TestScatter";
 import TestBar from "./src/examples/TestBar";
 import TestStackArea from "./src/examples/TestStackArea";
 import TestMultiPlot from "./src/examples/TestMultiPlot";
