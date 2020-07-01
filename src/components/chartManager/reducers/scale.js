@@ -45,8 +45,9 @@ function scale(state = initialState, action) {
       const finalizedMap = finalizeScale(changedScaleData);
       console.log("%cCOMMIT", "background: green; color:white", finalizedMap);
       // make scale
-      finalizedMap.forEach((m) => {
+      finalizedMap.forEach((m, id) => {
         m.scale = makeScale(m.scaleType, m.domain, m.option);
+        m.id = id;
       });
       return {
         ...state,

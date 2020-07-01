@@ -138,6 +138,7 @@ describe("Scale reducer", () => {
         [
           "x",
           {
+            id: "x",
             scaleType: scaleType.linear,
             domain: [0, 50],
             option: {},
