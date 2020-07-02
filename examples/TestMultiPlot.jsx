@@ -3,13 +3,15 @@ import { View } from "react-native";
 
 import randData from "./data/rand";
 import { curveMonotoneX } from "d3-shape";
-import Chart from "../components/Chart";
-import Grid from "../components/Grid";
-import AreaPlot from "../components/AreaPlot";
-import LinePlot from "../components/LinePlot";
-import Marker from "../components/Marker";
-import ScatterPlot from "../components/ScatterPlot";
-import Axis from "../components/Axis";
+import {
+  Chart,
+  Grid,
+  AreaPlot,
+  LinePlot,
+  Marker,
+  ScatterPlot,
+  Axis,
+} from "../src";
 
 // moved outside to avoid re-render
 const mock = randData;

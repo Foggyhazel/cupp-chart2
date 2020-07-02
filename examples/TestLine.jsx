@@ -2,12 +2,8 @@ import React, { useState } from "react";
 import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
 import { timeMonth } from "d3-time";
-import Chart from "../components/Chart";
-
-import LinePlot from "../components/LinePlot";
 import { View, Button } from "react-native";
-import Axis from "../components/Axis";
-import Grid from "../components/Grid";
+import { Chart, Grid, LinePlot, Axis } from "../src";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];

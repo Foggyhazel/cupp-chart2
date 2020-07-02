@@ -1,9 +1,6 @@
 import React from "react";
 import houseData from "./data/train.json";
-import { Chart } from "../components/Chart";
-import Grid from "../components/Grid";
-import Axis from "../components/Axis";
-import ScatterPlot from "../components/ScatterPlot";
+import { Chart, Grid, ScatterPlot, Axis } from "../src";
 
 export default function TestHousePrice() {
   return (

@@ -7,11 +7,11 @@ import {
   Button,
 } from "react-native";
 
-import TestLine from "./src/examples/TestLine";
-import TestScatter from "./src/examples/TestScatter";
-import TestBar from "./src/examples/TestBar";
-import TestStackArea from "./src/examples/TestStackArea";
-import TestMultiPlot from "./src/examples/TestMultiPlot";
+import TestLine from "./examples/TestLine";
+import TestScatter from "./examples/TestScatter";
+import TestBar from "./examples/TestBar";
+import TestStackArea from "./examples/TestStackArea";
+import TestMultiPlot from "./examples/TestMultiPlot";
 
 export default function App() {
   const [, update] = useState({});
