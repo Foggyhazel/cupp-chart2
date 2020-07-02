@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useChartContext } from "./chartContext";
 import ExportData from "./ExportData";
+import makeConnector from "./makeConnector";
 
 /**
  * compose plot
@@ -10,8 +11,8 @@ const compose = (config) => (Plot) => {
     const ctx = useChartContext();
     const selectorRef = useRef(null);
 
-    let data, exportData, setProps;
-    let Connector;
+    let data, exportData, setProps, inject, connector;
+    const connectorRef = useRef(null);
 
     if (config) {
       let configObj;
@@ -26,9 +27,18 @@ const compose = (config) => (Plot) => {
           configObj = r;
         }
       }
-      ({ data, exportData, setProps } = configObj);
-      Connector = configObj.connector;
+      ({ data, exportData, setProps, inject, connector } = configObj);
+
+      // connector is intended to be made only once
+      // so that memoization can do the work.
+      if (connector && connectorRef.current == null) {
+        connectorRef.current = connector;
+      } else if (inject && connectorRef.current == null) {
+        connectorRef.current = makeConnector(inject());
+      }
     }
+
+    const Connector = connectorRef.current;
 
     return (
       <React.Fragment>
@@ -43,7 +53,13 @@ const compose = (config) => (Plot) => {
             ));
           })}
         {Connector ? (
-          <Connector Plot={Plot} {...ownProps} {...setProps} data={data} />
+          <Connector
+            Plot={Plot}
+            {...ownProps}
+            {...setProps}
+            data={data}
+            _ctx={ctx}
+          />
         ) : (
           <Plot {...ownProps} {...setProps} data={data} />
         )}

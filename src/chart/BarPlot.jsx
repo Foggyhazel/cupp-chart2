@@ -1,7 +1,7 @@
 import React from "react";
 import { Rect } from "react-native-svg";
-import compose from "./chartManager/compose";
-import bandPlotConfigure from "./configure/bandPlotConfigure";
+import compose from "../chartManager/compose";
+import bandPlotConfigure from "../configure/bandPlotConfigure";
 
 function BarPlot({ data, scale, x, y, xAxis, yAxis }) {
   const sx = scale(xAxis, "h");

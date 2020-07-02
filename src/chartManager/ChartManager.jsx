@@ -6,8 +6,8 @@ import React, {
   useEffect,
 } from "react";
 import { connect } from "react-redux";
-import { commitChannel } from "./action/channelAction";
 import StoreProvider from "./StoreProvider";
+import { commitChannel } from "./action/exportData";
 
 const CommitContext = createContext(null);
 export const useScheduleCommit = () => useContext(CommitContext);

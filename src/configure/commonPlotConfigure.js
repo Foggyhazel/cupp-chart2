@@ -5,11 +5,11 @@ import {
   computeDomain,
   firstData,
   computeYDomain,
-} from "../helper";
+} from "../chart/helper";
 import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
-import { PassScaleXY } from "./connectors";
 import { getDefaultScaleType } from "../chartManager/scalefn";
+import makeScaleFactory from "./factory/makeScaleFactory";
 
 const getData = (data, props) => props.data || data;
 const getXAxis = (_, props) =>
@@ -124,7 +124,12 @@ export default function commonPlotConfigure() {
           scale: exportScale,
         },
         setProps,
-        connector: PassScaleXY,
+        inject: () => ({
+          scale: makeScaleFactory([
+            (props) => props.xAxis,
+            (props) => props.yAxis,
+          ]),
+        }),
       };
     }
   );

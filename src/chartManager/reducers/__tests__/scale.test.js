@@ -1,6 +1,5 @@
 import scale from "../scale";
-import { exportData, unexportData } from "../../action/exportData";
-import { commitActions } from "../../action/channelAction";
+import { exportData, unexportData, chCOMMIT } from "../../action/exportData";
 import _ from "lodash";
 import { scaleType } from "../../scalefn";
 
@@ -15,9 +14,11 @@ const removeUnusedProperty = (nextState) => {
   );
 };
 
+const omit = (state) => _.omit(state, "changed");
+
 describe("Scale reducer", () => {
   it("Return initial state", () => {
-    expect(scale(undefined, {})).toEqual(initialState);
+    expect(omit(scale(undefined, {}))).toEqual(initialState);
   });
 
   it("Handle export scale action", () => {
@@ -31,6 +32,7 @@ describe("Scale reducer", () => {
             },
           },
           map: new Map(),
+          changed: [],
         },
         exportData("scale", 1, {
           id: "x",
@@ -38,20 +40,22 @@ describe("Scale reducer", () => {
           domain: [0, 100],
         })
       )
-    ).toEqual({
-      exportedScale: {
-        0: {
-          id: "x",
-          scaleType: scaleType.time,
+    ).toEqual(
+      expect.objectContaining({
+        exportedScale: {
+          0: {
+            id: "x",
+            scaleType: scaleType.time,
+          },
+          1: {
+            id: "x",
+            scaleType: scaleType.linear,
+            domain: [0, 100],
+          },
         },
-        1: {
-          id: "x",
-          scaleType: scaleType.linear,
-          domain: [0, 100],
-        },
-      },
-      map: new Map(),
-    });
+        map: new Map(),
+      })
+    );
   });
 
   it("Handle unexport scale action", () => {
@@ -70,19 +74,22 @@ describe("Scale reducer", () => {
             },
           },
           map: new Map(),
+          changed: [],
         },
         unexportData("scale", 0)
       )
-    ).toEqual({
-      exportedScale: {
-        1: {
-          id: "x",
-          scaleType: scaleType.linear,
-          domain: [0, 100],
+    ).toEqual(
+      expect.objectContaining({
+        exportedScale: {
+          1: {
+            id: "x",
+            scaleType: scaleType.linear,
+            domain: [0, 100],
+          },
         },
-      },
-      map: new Map(),
-    });
+        map: new Map(),
+      })
+    );
   });
 
   it("Handle commit action, correctly finalize scale", () => {
@@ -102,49 +109,41 @@ describe("Scale reducer", () => {
           },
         },
         map: new Map(),
+        changed: [],
       },
-      commitActions("scale", [
-        exportData("scale", 0, {
-          id: "x",
-          scaleType: scaleType.linear,
-          source: "data",
-          domain: [0, 100],
-        }),
-        exportData("scale", 1, {
-          id: "x",
-          source: "axis",
-          max: 50,
-        }),
-      ])
+      { type: chCOMMIT("scale") }
     );
 
     removeUnusedProperty(nextState);
 
-    expect(nextState).toEqual({
-      exportedScale: {
-        0: {
-          id: "x",
-          scaleType: scaleType.linear,
-          source: "data",
-          domain: [0, 100],
-        },
-        1: {
-          id: "x",
-          source: "axis",
-          max: 50,
-        },
-      },
-      map: new Map([
-        [
-          "x",
-          {
+    expect(nextState).toEqual(
+      expect.objectContaining({
+        exportedScale: {
+          0: {
+            id: "x",
             scaleType: scaleType.linear,
-            domain: [0, 50],
-            option: {},
+            source: "data",
+            domain: [0, 100],
           },
-        ],
-      ]),
-    });
+          1: {
+            id: "x",
+            source: "axis",
+            max: 50,
+          },
+        },
+        map: new Map([
+          [
+            "x",
+            {
+              id: "x",
+              scaleType: scaleType.linear,
+              domain: [0, 50],
+              option: {},
+            },
+          ],
+        ]),
+      })
+    );
   });
 
   it("Does not change map.scale that is outside of commit", () => {
@@ -187,6 +186,7 @@ describe("Scale reducer", () => {
             },
           ],
         ]),
+        changed: [],
       },
       {}
     );
@@ -200,7 +200,7 @@ describe("Scale reducer", () => {
     });
 
     const later = scale(startState, newExportAction);
-    const finalScale = scale(later, commitActions("scale", [newExportAction]));
+    const finalScale = scale(later, { type: chCOMMIT("scale") });
     const finalX = finalScale.map.get("x");
     expect(finalX).toBe(startX);
     expect(finalScale.map.get("y").domain).toStrictEqual([100, 200]);

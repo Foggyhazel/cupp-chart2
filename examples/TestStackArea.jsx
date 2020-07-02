@@ -3,10 +3,7 @@ import covid from "./data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
 import { View } from "react-native";
 import { timeMonth } from "d3-time";
-import { Chart } from "../components/Chart";
-import Grid from "../components/Grid";
-import AreaPlot from "../components/AreaPlot";
-import Axis from "../components/Axis";
+import { Chart, Grid, AreaPlot, Axis } from "../src";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];
@@ -15,10 +12,9 @@ const cols = ["confirmed", "recovered", "deaths"];
 const xa = (d) => parseDate(d.date);
 const ta = [timeMonth];
 const tay = [6];
+const tickFormat = timeFormat("%b");
 
 export default function StackArea() {
-  const tickFormat = timeFormat("%b");
-
   return (
     <View>
       <Chart data={mock} x={xa} height={200}>

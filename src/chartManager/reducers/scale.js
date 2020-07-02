@@ -1,5 +1,4 @@
-import { chEXPORT, chUNEXPORT } from "../action/exportData";
-import { chCOMMIT } from "../action/channelAction";
+import { chEXPORT, chUNEXPORT, chCOMMIT } from "../action/exportData";
 import _ from "lodash";
 import { scaleClass, getDefaultScaleType, makeScale } from "../scalefn";
 
@@ -12,6 +11,7 @@ const SCALE_COMMIT = chCOMMIT(CH);
 const initialState = {
   exportedScale: {},
   map: new Map(),
+  changed: [],
 };
 
 function scale(state = initialState, action) {
@@ -25,6 +25,7 @@ function scale(state = initialState, action) {
       return {
         ...state,
         exportedScale: { ...state.exportedScale, [action.key]: action.data },
+        changed: [...state.changed, action.data.id],
       };
     case SCALE_UNEXPORT: {
       // eslint-disable-next-line no-unused-vars
@@ -32,25 +33,25 @@ function scale(state = initialState, action) {
       return {
         ...state,
         exportedScale: rest,
+        changed: [...state.changed, omit.id],
       };
     }
     case SCALE_COMMIT: {
-      const changedScaleData = getChangedScaleFromActions(
-        state.exportedScale,
-        action.actions
-      );
+      const changedScale = getChangedScale(state.exportedScale, state.changed);
 
-      if (Object.keys(changedScaleData).length == 0) return state;
+      if (Object.keys(changedScale).length == 0) return state;
 
-      const finalizedMap = finalizeScale(changedScaleData);
+      const finalizedMap = finalizeScale(changedScale);
       console.log("%cCOMMIT", "background: green; color:white", finalizedMap);
       // make scale
-      finalizedMap.forEach((m) => {
+      finalizedMap.forEach((m, id) => {
         m.scale = makeScale(m.scaleType, m.domain, m.option);
+        m.id = id;
       });
       return {
         ...state,
         map: new Map([...state.map, ...finalizedMap]),
+        changed: [],
       };
     }
     default:
@@ -60,11 +61,9 @@ function scale(state = initialState, action) {
 
 export default scale;
 
-function getChangedScaleFromActions(exportedScale, actions) {
-  const ids = new Set();
-  actions.forEach((a) => ids.add(exportedScale[a.key].id));
-  const changedScaleData = _.pickBy(exportedScale, (info) => ids.has(info.id));
-  return changedScaleData;
+function getChangedScale(exportedScale, changedIds) {
+  const ids = new Set(changedIds);
+  return _.pickBy(exportedScale, (info) => ids.has(info.id));
 }
 
 const checked = {
