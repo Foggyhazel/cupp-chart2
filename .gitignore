@@ -14,7 +14,7 @@ web-report/
 .DS_Store
 
 .vscode/settings.json
-src/components/.old/*
+src/chart/.old/*
 .vscode/.react/*
 
 coverage/**/*
