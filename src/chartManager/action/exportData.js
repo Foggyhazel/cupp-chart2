@@ -1,21 +1,28 @@
-import { chAction, chType } from "./channelAction";
-
 const EXPORT = "export";
 const UNEXPORT = "unexport";
+const COMMIT = "commit";
 
-export const exportData = (channel, key, data) =>
-  chAction(channel, {
-    type: EXPORT,
-    key: key,
-    data: data,
-  });
+export const COMMIT_CHANNEL = "COMMIT_CHANNEL";
 
-export const unexportData = (channel, key) =>
-  chAction(channel, {
-    type: UNEXPORT,
-    key: key,
-  });
+export const exportData = (channel, key, data) => ({
+  type: channel + "." + EXPORT,
+  key,
+  data,
+  _channel: channel,
+});
+
+export const unexportData = (channel, key) => ({
+  type: channel + "." + UNEXPORT,
+  key,
+  _channel: channel,
+});
+
+export const commitChannel = (channel = null) => ({
+  type: COMMIT_CHANNEL,
+  _channel: channel,
+});
 
 // these are kind of incomplete action types, intended to be called with channel name
-export const chEXPORT = (channel) => chType(channel, EXPORT);
-export const chUNEXPORT = (channel) => chType(channel, UNEXPORT);
+export const chEXPORT = (channel) => channel + "." + EXPORT;
+export const chUNEXPORT = (channel) => channel + "." + UNEXPORT;
+export const chCOMMIT = (channel) => channel + "." + COMMIT;
