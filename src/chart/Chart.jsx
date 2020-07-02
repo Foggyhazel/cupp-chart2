@@ -3,10 +3,10 @@ import React, { useMemo } from "react";
 import Svg, { Defs, ClipPath, Rect } from "react-native-svg";
 import { computeDomain, parseAccessor, firstData } from "./helper";
 
-import ChartManager from "./chartManager/ChartManager";
-import ExportData from "./chartManager/ExportData";
-import { scaleClass, getDefaultScaleType } from "./chartManager/scalefn";
-import { ChartContextProvider } from "./chartManager/chartContext";
+import ChartManager from "../chartManager/ChartManager";
+import ExportData from "../chartManager/ExportData";
+import { scaleClass, getDefaultScaleType } from "../chartManager/scalefn";
+import { ChartContextProvider } from "../chartManager/chartContext";
 
 const defaultMargin = {
   top: 20,

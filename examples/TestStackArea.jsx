@@ -12,10 +12,9 @@ const cols = ["confirmed", "recovered", "deaths"];
 const xa = (d) => parseDate(d.date);
 const ta = [timeMonth];
 const tay = [6];
+const tickFormat = timeFormat("%b");
 
 export default function StackArea() {
-  const tickFormat = timeFormat("%b");
-
   return (
     <View>
       <Chart data={mock} x={xa} height={200}>

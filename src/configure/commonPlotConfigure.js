@@ -5,7 +5,7 @@ import {
   computeDomain,
   firstData,
   computeYDomain,
-} from "../helper";
+} from "../chart/helper";
 import { stack as d3Stack, stackOffsetDiverging } from "d3-shape";
 import { min as d3Min, max as d3Max } from "d3-array";
 import { getDefaultScaleType } from "../chartManager/scalefn";

@@ -1,8 +1,8 @@
 import React from "react";
 import ChartAxis from "./ChartAxis";
-import { useChartContext } from "./chartManager/chartContext";
-import compose from "./chartManager/compose";
-import axisConfigure from "./configure/axisConfigure";
+import { useChartContext } from "../chartManager/chartContext";
+import compose from "../chartManager/compose";
+import axisConfigure from "../configure/axisConfigure";
 //TODO: auto orient axis
 function Axis({ id, scale, orient = "left", hide = false, ...rest }) {
   const { width, height, margin } = useChartContext();

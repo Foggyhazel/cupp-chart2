@@ -1,8 +1,8 @@
 import React from "react";
 import { line as d3Line, curveLinear } from "d3-shape";
 import { Path } from "react-native-svg";
-import compose from "./chartManager/compose";
-import commonPlotConfigure from "./configure/commonPlotConfigure";
+import compose from "../chartManager/compose";
+import commonPlotConfigure from "../configure/commonPlotConfigure";
 
 function LinePlot({
   data,

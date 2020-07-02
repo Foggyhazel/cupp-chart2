@@ -1,8 +1,8 @@
 import React from "react";
 import { Line, G, Rect } from "react-native-svg";
-import compose from "./chartManager/compose";
-import { useChartContext } from "./chartManager/chartContext";
-import makeScaleFactory from "./configure/factory/makeScaleFactory";
+import compose from "../chartManager/compose";
+import { useChartContext } from "../chartManager/chartContext";
+import makeScaleFactory from "../configure/factory/makeScaleFactory";
 
 function Grid({ scale, xAxis, yAxis, X, Y, noBorder }) {
   const { width, height, margin } = useChartContext();

@@ -1,8 +1,8 @@
 import React from "react";
 import { area as d3Area, curveLinear } from "d3-shape";
 import { Path } from "react-native-svg";
-import commonPlotConfigure from "./configure/commonPlotConfigure";
-import compose from "./chartManager/compose";
+import commonPlotConfigure from "../configure/commonPlotConfigure";
+import compose from "../chartManager/compose";
 
 const color = [
   "#d53e4f",
