@@ -13,7 +13,6 @@ web-report/
 # macOS
 .DS_Store
 
-.vscode/settings.json
 src/chart/.old/*
 .vscode/.react/*
 
