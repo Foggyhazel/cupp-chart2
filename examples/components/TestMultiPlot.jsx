@@ -11,7 +11,7 @@ import {
   Marker,
   ScatterPlot,
   Axis,
-} from "../../src";
+} from "cupp-chart";
 
 // moved outside to avoid re-render
 const mock = randData;

@@ -1,6 +1,6 @@
 import React from "react";
 import lettersData from "../data/letters.json";
-import { Chart, BarPlot, Axis } from "../../src";
+import { Chart, BarPlot, Axis } from "cupp-chart";
 
 export default function TestBar() {
   return (
