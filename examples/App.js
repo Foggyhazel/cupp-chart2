@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import TestLine from "./components/TestLine";
 import TestMultiPlot from "./components/TestMultiPlot";
+import TestScatter from "./components/TestScatter";
+import TestStackArea from "./components/TestStackArea";
+import TestBar from "./components/TestBar";
+
 import {
   View,
   SafeAreaView,
@@ -10,11 +14,12 @@ import {
 } from "react-native";
 
 export default function App() {
+  const [, update] = useState({});
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          <TestMultiPlot />
+          <TestStackArea />
         </ScrollView>
         <Button title="Update" onPress={() => update({})} />
       </SafeAreaView>

@@ -1,11 +1,29 @@
 {
+  "name": "cupp-chart",
+  "description": "React native chart library made for CUP+ project. Made with d3 as a core and render with react-native-svg.",
+  "version": "0.1.0",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Foggyhazel/cupp-chart2.git"
+  },
+  "keywords": [
+    "chart",
+    "react",
+    "native",
+    "d3",
+    "svg"
+  ],
+  "author": "Chaipat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Foggyhazel/cupp-chart2/issues"
+  },
+  "homepage": "https://github.com/Foggyhazel/cupp-chart2#readme",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject",
     "test": "jest",
     "testDebug": "jest -o --watch --coverage=false"
   },
@@ -32,13 +50,11 @@
     "d3-shape": "1.3.7",
     "d3-time": "^1.1.0",
     "d3-time-format": "2.2.3",
-    "expo": "~37.0.3",
     "lodash": "4.17.15",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-svg": "11.0.1",
-    "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "reselect": "^4.0.0"
