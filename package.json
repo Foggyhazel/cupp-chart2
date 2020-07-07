@@ -2,6 +2,7 @@
   "name": "cupp-chart",
   "description": "React native chart library made for CUP+ project. Made with d3 as a core and render with react-native-svg.",
   "version": "0.1.0",
+  "main": "node_modules/expo/AppEntry.js",
   "directories": {
     "example": "examples"
   },
@@ -22,7 +23,6 @@
     "url": "https://github.com/Foggyhazel/cupp-chart2/issues"
   },
   "homepage": "https://github.com/Foggyhazel/cupp-chart2#readme",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "test": "jest",
     "testDebug": "jest -o --watch --coverage=false"
