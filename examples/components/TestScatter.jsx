@@ -1,6 +1,6 @@
 import React from "react";
-import houseData from "./data/train.json";
-import { Chart, Grid, ScatterPlot, Axis } from "../src";
+import houseData from "../data/train.json";
+import { Chart, Grid, ScatterPlot, Axis } from "../../src";
 
 const ta = [3];
 const ya = { price: (d) => parseFloat(d["SalePrice"]) };

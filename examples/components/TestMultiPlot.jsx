@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import randData from "./data/rand";
+import randData from "../data/rand";
 import { curveMonotoneX } from "d3-shape";
 import {
   Chart,
@@ -11,7 +11,7 @@ import {
   Marker,
   ScatterPlot,
   Axis,
-} from "../src";
+} from "../../src";
 
 // moved outside to avoid re-render
 const mock = randData;

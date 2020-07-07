@@ -1,6 +1,6 @@
 import React from "react";
-import lettersData from "./data/letters.json";
-import { Chart, BarPlot, Axis } from "../src";
+import lettersData from "../data/letters.json";
+import { Chart, BarPlot, Axis } from "../../src";
 
 export default function TestBar() {
   return (

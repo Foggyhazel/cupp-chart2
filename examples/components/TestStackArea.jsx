@@ -1,9 +1,9 @@
 import React from "react";
-import covid from "./data/covid.json";
+import covid from "../data/covid.json";
 import { timeParse, timeFormat } from "d3-time-format";
 import { View } from "react-native";
 import { timeMonth } from "d3-time";
-import { Chart, Grid, AreaPlot, Axis } from "../src";
+import { Chart, Grid, AreaPlot, Axis } from "../../src";
 
 // moved outside to avoid re-render
 const mock = covid["Thailand"];
