@@ -1,7 +1,7 @@
 {
   "name": "cupp-chart",
   "description": "React native chart library made for CUP+ project",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/commonjs/index.js",
   "directories": {
     "example": "examples"
