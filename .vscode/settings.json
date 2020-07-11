@@ -3,8 +3,10 @@
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
-    "**/node_modules/**": true,
+    "**/node_modules/*/**": true,
     "**/.hg/store/**": true,
-    "**/.expo/**": true
+    "**/.expo/**": true,
+    "**/examples/node_modules/*/**": true,
+    "**/examples/.expo/*/**": true
   }
 }

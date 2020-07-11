@@ -2,7 +2,7 @@
   "name": "cupp-chart",
   "description": "React native chart library made for CUP+ project",
   "version": "0.1.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "lib/commonjs/index.js",
   "directories": {
     "example": "examples"
   },
@@ -25,7 +25,9 @@
   "homepage": "https://github.com/Foggyhazel/cupp-chart2#readme",
   "scripts": {
     "test": "jest",
-    "testDebug": "jest -o --watch --coverage=false"
+    "testDebug": "jest -o --watch --coverage=false",
+    "prepare": "bob build",
+    "release": "release-it"
   },
   "jest": {
     "preset": "jest-expo",
@@ -42,6 +44,11 @@
       "!**/node_modules/**",
       "!**/babel.config.js",
       "!**/jest.setup.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/",
+      "<rootDir>/examples/node_modules",
+      "<rootDir>/node_modules"
     ]
   },
   "dependencies": {
@@ -51,6 +58,7 @@
     "d3-time": "^1.1.0",
     "d3-time-format": "2.2.3",
     "lodash": "4.17.15",
+    "metro-react-native-babel-preset": "^0.60.0",
     "react-native-svg": "11.0.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
@@ -73,11 +81,43 @@
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.1.tar.gz",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "release-it": "^13.6.5"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
-  "private": true
+  "private": true,
+  "react-native": "src/index.js",
+  "module": "lib/module/index.js",
+  "files": [
+    "src",
+    "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ]
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ]
 }
