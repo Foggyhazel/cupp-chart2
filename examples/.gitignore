@@ -1,4 +1,5 @@
 node_modules/**/*
+.expo/*
 npm-debug.*
 *.jks
 *.p8
@@ -7,16 +8,6 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-web-report/
 
 # macOS
 .DS_Store
-
-.vscode/settings.json
-src/chart/.old/*
-.vscode/.react/*
-
-coverage/**/*
-node_modules
-
-lib/
